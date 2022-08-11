@@ -1,41 +1,33 @@
 package com.revature.SiteName.models;
 
 public class User {
-    private String firstName;
-    private String lastName;
+    private String name;
     private String username;
     private String password;
+    private String email;
     private String region;
     private String hometown;
-    private  
 
     public User() {
 
     }
 
-    public User(String firstName, String lastName, String username, String password, String region, String hometown) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String name, String username, String password, String email, String region, String hometown) {
+        this.name = name;
         this.password = password;
+        this.email = email;
         this.region = region;
         this.hometown = hometown;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getUsername() {
         return username;
@@ -51,6 +43,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getRegion() {
@@ -72,10 +72,10 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                "firstName='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
                 ", region='" + region + '\'' +
                 ", hometown='" + hometown + '\'' +
                 '}';
