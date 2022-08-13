@@ -78,11 +78,15 @@ public class User {
         this.hometown = hometown;
     }
 
+    public String toFileString() {
+        return id + ":" + name + ":" + username + ":" + password + ":" + email + ":" + region + ":" + hometown + "\n";
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", firstName='" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
@@ -90,4 +94,5 @@ public class User {
                 ", hometown='" + hometown + '\'' +
                 '}';
     }
+
 }
