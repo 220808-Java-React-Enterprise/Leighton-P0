@@ -4,16 +4,16 @@ public class Product {
     private String id;
     private String name;
     private int price;
-    private int inventory;
+    private int stock;
 
     public Product() {
 
     }
 
-    public Product(String name, int price, int inventory) {
+    public Product(String name, int price, int stock) {
         this.name = name;
         this.price = price;
-        this.inventory = inventory;
+        this.stock = stock;
     }
 
     public String getId() {
@@ -40,12 +40,12 @@ public class Product {
         this.price = price;
     }
 
-    public int getInventory() {
-        return inventory;
+    public int getStock() {
+        return stock;
     }
 
-    public void setInventory(int inventory) {
-        this.inventory = inventory;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Product {
                 "id='" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price + '\'' +
-                ", inventory=" + inventory +
+                ", inventory=" + stock +
                 '}';
     }
 }

@@ -1,12 +1,14 @@
 package com.revature.SiteName.models;
 
 import java.util.HashMap;
+import java.time.*;
 
 public class Order {
     private String id;
     private String customer;
     private HashMap<String, Integer> items;
     private int tot_cost;
+    private LocalDate date;
 
     public String getId() {
         return id;
@@ -38,6 +40,14 @@ public class Order {
 
     public void setTot_cost(int tot_cost) {
         this.tot_cost = tot_cost;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     @Override

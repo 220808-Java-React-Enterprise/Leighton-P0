@@ -57,5 +57,7 @@ public class LoginMenu implements MenuIF {
 
         User user = new User();
         UserServices userService = new UserServices();
+
+        return user;
     }
 }
