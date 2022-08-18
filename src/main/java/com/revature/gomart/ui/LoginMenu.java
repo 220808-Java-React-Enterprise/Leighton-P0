@@ -1,6 +1,8 @@
 package com.revature.gomart.ui;
 
+import com.revature.gomart.daos.UserDAO;
 import com.revature.gomart.models.Customer;
+import com.revature.gomart.models.User;
 import com.revature.gomart.services.UserService;
 import com.revature.gomart.utils.custom_exceptions.*;
 
@@ -37,13 +39,13 @@ public class LoginMenu implements MenuIF {
                     case "2":
                         Customer customer = signup();
                         userService.register(customer);
-                        new LandingPage(customer).start();
+                        new LandingPage(customer, new UserService(new UserDAO())).start();
                         break;
                     case "3":
                         System.out.println("We hope to see you again!");
                         break exit;
                     case "+":
-//                        new AdminLogin.start();
+                        new AdminLogin(new UserService(new UserDAO())).start();
                     default:
                         System.out.println("\nSorry, I didn't catch that\nPlease select either 1, 2, or 3");
                 }
@@ -52,7 +54,29 @@ public class LoginMenu implements MenuIF {
     }
 
     private void login() {
-        System.out.println("\nThank you for logging in");
+        String username = "";
+        String password = "";
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Signing in existing user");
+
+        exit:
+        {
+            while (true) {
+                System.out.println("Please enter your username: ");
+                username = scan.nextLine();
+
+                System.out.println("Please enter your password: ");
+                password = scan.nextLine();
+
+                try {
+                    User customer = userService.login(username, password);
+                    new LandingPage(customer, new UserService(new UserDAO())).start();
+                } catch (InvalidUserException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
     }
 
     private Customer signup() {

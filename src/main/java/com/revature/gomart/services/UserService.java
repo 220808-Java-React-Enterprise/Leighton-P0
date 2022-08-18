@@ -15,7 +15,7 @@ public class UserService {
     public void register(User user) {userDAO.save(user);}
 
     public User login(String username, String password) {
-        User user = userDAO.getUserByUsernameAndPassword(username, password);
+        User user = userDAO.getByUsernameAndPassword(username, password);
         if (user == null) throw new InvalidUserException("Incorrect username or password");
         return user;
     }
