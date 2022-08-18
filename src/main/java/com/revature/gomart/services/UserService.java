@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public boolean isValidUsername(String username) {
-        if (!username.matches("/^[A-Za-z0-9]{7,20}(?:[ _-][A-Za-z0-9]+)*$/")) throw new InvalidUserException("\nUsername must be between 7-20 characters and may only contain letters, numbers, dashes, and hyphens (separators)\n.No more than one separator in a row allowed\nSeparators not allowed at beginning or end of username");
+        if (!username.matches("^[a-z0-9_-]{3,15}$")) throw new InvalidUserException("\nUsername must be between 3-15 characters and may only contain letters, numbers, dashes, and hyphens");
         return true;
     }
 
@@ -50,7 +50,7 @@ public class UserService {
     }
 
     public boolean isValidKantoTown(String town) {
-        List<String> kantoTowns = Arrays.asList("Pallet Town", "Viridian City", "Pewter City", "Cerulean City", "Vermilion City", "Lavender Town", "Celadon City", "Fuchsia City", "Saffron City", "Cinnabar Island", "Indigo Plateau")
+        List<String> kantoTowns = Arrays.asList("Pallet Town", "Viridian City", "Pewter City", "Cerulean City", "Vermilion City", "Lavender Town", "Celadon City", "Fuchsia City", "Saffron City", "Cinnabar Island", "Indigo Plateau");
         if (!kantoTowns.contains(town)) throw new InvalidUserException("Town not recognized");
         return true;
     }

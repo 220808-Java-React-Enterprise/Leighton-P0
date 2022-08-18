@@ -10,9 +10,11 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) {
         /* dependency injection */
+//        UserDAO userDAO = new UserDAO();
+//
+//        System.out.println(userDAO.getAll());
 
-        new
-                LoginMenu(new UserService(new UserDAO())).start();
+        new LoginMenu(new UserService(new UserDAO())).start();
 
     }
 }

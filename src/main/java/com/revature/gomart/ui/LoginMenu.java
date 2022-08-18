@@ -127,7 +127,7 @@ public class LoginMenu implements MenuIF {
                 usernameExit:
                 {
                     while (true) {
-                        System.out.println("Please create a username (8-20 characters)");
+                        System.out.println("Please create a username (8-20 characters): ");
                         username = scan.nextLine();
 
                         try {
@@ -143,7 +143,7 @@ public class LoginMenu implements MenuIF {
                 {
                     while (true) {
                         try {
-                            System.out.println("Please create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters");
+                            System.out.println("Please create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters): ");
                             password = scan.nextLine();
 
                             userService.isValidPassword(password);
@@ -161,7 +161,7 @@ public class LoginMenu implements MenuIF {
                 emailExit:
                 {
                     while (true) {
-                        System.out.println("Please enter your email");
+                        System.out.println("Please enter your email: ");
                         email = scan.nextLine();
 
                         try {
@@ -175,7 +175,7 @@ public class LoginMenu implements MenuIF {
                 hometownExit:
                 {
                     while (true) {
-                        System.out.println("Please enter your hometown");
+                        System.out.println("Please enter your hometown: ");
                         hometown = scan.nextLine();
 
                         try {
@@ -191,7 +191,7 @@ public class LoginMenu implements MenuIF {
                     while (true) {
                         System.out.println("Please review the following information: ");
                         System.out.println("You are " + title + " " + fname);
-                        System.out.println("Username: " + username + "\nPassword: " + password + "\nEmail" + email + "\nAnd you are from " + hometown);
+                        System.out.println("Username: " + username + "\nPassword: " + password + "\nEmail: " + email + "\nAnd you are from " + hometown);
                         System.out.println("Is this correct? (y/n):");
 
                         switch (scan.nextLine().toLowerCase()) {

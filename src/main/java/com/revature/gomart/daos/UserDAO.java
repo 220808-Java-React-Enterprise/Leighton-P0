@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO implements CrudDAO<User> {
@@ -28,10 +29,10 @@ public class UserDAO implements CrudDAO<User> {
             ps.setString(5,obj.getPassword());
             ps.setString(6,obj.getEmail());
             ps.setString(7,obj.getHometown());
-            ps.setString(8,obj.getAdmin().toString());
-
+            ps.setBoolean(8,obj.getAdmin());
+            ps.executeUpdate();
         } catch (SQLException e) {
-            throw new InvalidSQLException("An error occurred when trying to save to the database.");
+            throw new InvalidSQLException("Error. Could not save user to database");
         }
     }
 
@@ -52,7 +53,18 @@ public class UserDAO implements CrudDAO<User> {
 
     @Override
     public List<User> getAll() {
-        return null;
+        List<User> allUsers = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM users");
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+                allUsers.add(new Customer(rs.getString("fname")));
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+        return allUsers;
     }
 
     public User getByUsernameAndPassword(String username, String password) {
@@ -63,7 +75,7 @@ public class UserDAO implements CrudDAO<User> {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next())
-                return new Customer(rs.getString("id"), rs.getString("title"), rs.getString("fname"), rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("hometown"))
+                return new Customer(rs.getString("id"), rs.getString("title"), rs.getString("fname"), rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("hometown"));
         } catch (SQLException e) {
             throw new InvalidSQLException("An error occurred when trying to save to the database.");
         }

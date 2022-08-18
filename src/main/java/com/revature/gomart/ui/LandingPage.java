@@ -16,6 +16,6 @@ public class LandingPage implements MenuIF {
 
     @Override
     public void start() {
-        System.out.println("\nWelcome back " + user.getTitle() + " " + user.getFname());
+        System.out.println("\nWelcome back, " + user.getTitle() + " " + user.getFname());
     }
 }
