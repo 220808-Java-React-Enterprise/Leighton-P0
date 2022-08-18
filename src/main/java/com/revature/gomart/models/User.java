@@ -2,10 +2,13 @@ package com.revature.gomart.models;
 
 public abstract class User {
     protected String id;
-    protected String name;
+    protected String title;
+    protected String fname;
     protected String username;
     protected String password;
     protected String email;
+    private String hometown;
+    protected Boolean admin;
 
     public String getId() {
         return id;
@@ -15,12 +18,20 @@ public abstract class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
     }
 
 
@@ -48,19 +59,35 @@ public abstract class User {
         this.email = email;
     }
 
+    public String getHometown() {
+        return hometown;
+    }
+
+    public void setHometown(String hometown) {
+        this.hometown = hometown;
+    }
+
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
 
     public String toFileString() {
-        return id + ":" + name + ":" + username + ":" + password + ":" + email + "\n";
+        return id + ":" +title + ":" + fname + ":" + username + ":" + password + ":" + email + ":" + admin + "\n";
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", name='" + name + '\'' +
+                ", fname='" + fname + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", admin='" + admin + '\'' +
                 '}';
     }
 
