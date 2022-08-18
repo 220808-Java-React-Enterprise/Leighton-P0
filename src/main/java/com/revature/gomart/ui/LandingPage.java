@@ -1,6 +1,6 @@
-package com.revature.SiteName.ui;
+package com.revature.gomart.ui;
 
-import com.revature.SiteName.models.User;
+import com.revature.gomart.models.User;
 
 public class LandingPage implements MenuIF {
 

@@ -1,25 +1,11 @@
-package com.revature.SiteName.models;
+package com.revature.gomart.models;
 
-public class User {
-    private String id;
-    private String name;
-    private String username;
-    private String password;
-    private String email;
-    private String region;
-    private String hometown;
-
-    public User() {
-
-    }
-
-    public User(String name, String username, String password, String email, String region, String hometown) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.region = region;
-        this.hometown = hometown;
-    }
+public abstract class User {
+    protected String id;
+    protected String name;
+    protected String username;
+    protected String password;
+    protected String email;
 
     public String getId() {
         return id;
@@ -62,24 +48,9 @@ public class User {
         this.email = email;
     }
 
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getHometown() {
-        return hometown;
-    }
-
-    public void setHometown(String hometown) {
-        this.hometown = hometown;
-    }
 
     public String toFileString() {
-        return id + ":" + name + ":" + username + ":" + password + ":" + email + ":" + region + ":" + hometown + "\n";
+        return id + ":" + name + ":" + username + ":" + password + ":" + email + "\n";
     }
 
     @Override
@@ -90,8 +61,6 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", region='" + region + '\'' +
-                ", hometown='" + hometown + '\'' +
                 '}';
     }
 

@@ -1,8 +1,7 @@
-package com.revature.SiteName.ui;
+package com.revature.gomart.ui;
 
-import com.revature.SiteName.models.User;
-import com.revature.SiteName.services.UserServices;
-import com.revature.SiteName.utils.custom_exceptions.InvalidUserException;
+import com.revature.gomart.models.Customer;
+import com.revature.gomart.services.CustomerServices;
 
 import java.util.Scanner;
 
@@ -30,8 +29,8 @@ public class LoginMenu implements MenuIF {
                         login();
                         break;
                     case "2":
-                        User user = signup();
-                        new LandingPage(user).start();
+                        Customer customer = signup();
+                        new LandingPage(customer).start();
                         break;
                     case "3":
                         System.out.println("We hope to see you again!");
@@ -47,7 +46,7 @@ public class LoginMenu implements MenuIF {
         System.out.println("\nThank you for logging in");
     }
 
-    private User signup() {
+    private Customer signup() {
         String name = "";
         String username = "";
         String password = "";
@@ -55,9 +54,9 @@ public class LoginMenu implements MenuIF {
         String hometown = "";
         String region = "";
 
-        User user = new User();
-        UserServices userService = new UserServices();
+        Customer customer = new Customer();
+        CustomerServices CustomerService = new CustomerServices();
 
-        return user;
+        return customer;
     }
 }

@@ -1,6 +1,6 @@
-package com.revature.SiteName.daos;
+package com.revature.gomart.daos;
 
-import com.revature.SiteName.models.Product;
+import com.revature.gomart.models.Product;
 
 import java.io.IOException;
 import java.util.List;

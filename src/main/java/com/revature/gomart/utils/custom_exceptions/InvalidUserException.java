@@ -1,4 +1,4 @@
-package com.revature.SiteName.utils.custom_exceptions;
+package com.revature.gomart.utils.custom_exceptions;
 
 public class InvalidUserException extends RuntimeException {
     public InvalidUserException() {

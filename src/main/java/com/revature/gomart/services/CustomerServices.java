@@ -1,10 +1,10 @@
-package com.revature.SiteName.services;
+package com.revature.gomart.services;
 
-import com.revature.SiteName.utils.custom_exceptions.InvalidUserException;
-import com.revature.SiteName.utils.custom_exceptions.InvalidNameException;
-import com.revature.SiteName.utils.custom_exceptions.InvalidEmailException;
+import com.revature.gomart.utils.custom_exceptions.InvalidUserException;
+import com.revature.gomart.utils.custom_exceptions.InvalidNameException;
+import com.revature.gomart.utils.custom_exceptions.InvalidEmailException;
 
-public class UserServices {
+public class CustomerServices {
 
     public void isValidUsername(String username) {
         if (!username.matches("/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/")) throw new InvalidUserException("\nUsername may only contain letters,numbers, dashes, and hyphens (separators)\n.No more than one separator in a row allowed\nSeparators not allowed at beginning or end of username");

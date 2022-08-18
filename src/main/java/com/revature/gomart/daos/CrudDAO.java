@@ -1,4 +1,4 @@
-package com.revature.SiteName.daos;
+package com.revature.gomart.daos;
 
 import java.io.IOException;
 import java.util.List;

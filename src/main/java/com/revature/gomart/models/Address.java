@@ -1,4 +1,4 @@
-package com.revature.SiteName.models;
+package com.revature.gomart.models;
 
 public class Address {
     private String name;
