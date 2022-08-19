@@ -1,9 +1,9 @@
 package com.revature.gomart.ui;
 
-import com.revature.gomart.daos.UserDAO;
+import com.revature.gomart.daos.*;
 import com.revature.gomart.models.Manager;
 import com.revature.gomart.models.User;
-import com.revature.gomart.services.UserService;
+import com.revature.gomart.services.*;
 import com.revature.gomart.utils.custom_exceptions.*;
 
 import java.util.Scanner;
@@ -66,7 +66,7 @@ public class AdminLogin implements MenuIF{
 
                 try {
                     User customer = userService.login(username, password);
-                    new LandingPage(customer, new UserService(new UserDAO())).start();
+                    new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO())).start();
                 } catch (InvalidUserException e) {
                     System.out.println(e.getMessage());
                 }

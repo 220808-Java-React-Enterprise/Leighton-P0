@@ -1,9 +1,9 @@
 package com.revature.gomart.ui;
 
-import com.revature.gomart.daos.UserDAO;
+import com.revature.gomart.daos.*;
 import com.revature.gomart.models.Customer;
 import com.revature.gomart.models.User;
-import com.revature.gomart.services.UserService;
+import com.revature.gomart.services.*;
 import com.revature.gomart.utils.custom_exceptions.*;
 
 import java.util.Scanner;
@@ -17,7 +17,6 @@ public class LoginMenu implements MenuIF {
 
     @Override
     public void start() {
-        String userInput = "";
         Scanner scan = new Scanner(System.in);
 
         exit:
@@ -30,16 +29,15 @@ public class LoginMenu implements MenuIF {
                 System.out.println("[3] Exit the Pokemart");
 
                 System.out.println("\nEnter:");
-                userInput = scan.nextLine();
 
-                switch (userInput) {
+                switch (scan.nextLine()) {
                     case "1":
                         login();
                         break exit;
                     case "2":
                         Customer customer = signup();
                         userService.register(customer);
-                        new LandingPage(customer, new UserService(new UserDAO())).start();
+                        new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO())).start();
                         break exit;
                     case "3":
                         System.out.println("We hope to see you again!");
@@ -70,8 +68,8 @@ public class LoginMenu implements MenuIF {
                 password = scan.nextLine();
 
                 try {
-                    User customer = userService.login(username, password);
-                    new LandingPage(customer, new UserService(new UserDAO())).start();
+                    User user = userService.login(username, password);
+                    new LandingPage(user, new UserService(new UserDAO()), new ProductService(new ProductDAO())).start();
                     break exit;
                 } catch (InvalidUserException e) {
                     System.out.println(e.getMessage());
@@ -84,7 +82,7 @@ public class LoginMenu implements MenuIF {
                         case "2":
                             Customer customer = signup();
                             userService.register(customer);
-                            new LandingPage(customer, new UserService(new UserDAO())).start();
+                            new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO())).start();
                             break exit;
                         default:
                             System.out.println("Invalid input");
