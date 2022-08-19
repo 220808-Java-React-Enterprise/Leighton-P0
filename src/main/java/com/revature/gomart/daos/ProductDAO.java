@@ -31,4 +31,6 @@ public class ProductDAO implements CrudDAO<Product>{
     public List<Product> getAll() {
         return null;
     }
+
+    public List<Product> getByCategory() {return null;}
 }

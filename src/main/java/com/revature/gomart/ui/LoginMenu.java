@@ -35,12 +35,12 @@ public class LoginMenu implements MenuIF {
                 switch (userInput) {
                     case "1":
                         login();
-                        break;
+                        break exit;
                     case "2":
                         Customer customer = signup();
                         userService.register(customer);
                         new LandingPage(customer, new UserService(new UserDAO())).start();
-                        break;
+                        break exit;
                     case "3":
                         System.out.println("We hope to see you again!");
                         break exit;
@@ -72,6 +72,7 @@ public class LoginMenu implements MenuIF {
                 try {
                     User customer = userService.login(username, password);
                     new LandingPage(customer, new UserService(new UserDAO())).start();
+                    break exit;
                 } catch (InvalidUserException e) {
                     System.out.println(e.getMessage());
                 }
@@ -127,12 +128,12 @@ public class LoginMenu implements MenuIF {
                 usernameExit:
                 {
                     while (true) {
-                        System.out.println("Please create a username (8-20 characters): ");
+                        System.out.println("Please create a username (3-15 characters): ");
                         username = scan.nextLine();
 
                         try {
                             userService.isValidUsername(username);
-                            // userService.isDuplicateUsername(username);
+                            userService.isDuplicateUsername(username);
                             break usernameExit;
                         } catch (InvalidUserException e) {
                             System.out.println(e.getMessage());

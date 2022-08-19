@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public boolean isValidUsername(String username) {
-        if (!username.matches("^[a-z0-9_-]{3,15}$")) throw new InvalidUserException("\nUsername must be between 3-15 characters and may only contain letters, numbers, dashes, and hyphens");
+        if (!username.matches("^[a-zA-Z0-9_-]{3,15}$")) throw new InvalidUserException("\nUsername must be between 3-15 characters and may only contain letters, numbers, dashes, and hyphens");
         return true;
     }
 
@@ -52,6 +52,11 @@ public class UserService {
     public boolean isValidKantoTown(String town) {
         List<String> kantoTowns = Arrays.asList("Pallet Town", "Viridian City", "Pewter City", "Cerulean City", "Vermilion City", "Lavender Town", "Celadon City", "Fuchsia City", "Saffron City", "Cinnabar Island", "Indigo Plateau");
         if (!kantoTowns.contains(town)) throw new InvalidUserException("Town not recognized");
+        return true;
+    }
+
+    public boolean isDuplicateUsername(String username) {
+        if (userDAO.getUsername(username) != null) throw new InvalidUserException("\nUsername not available!");
         return true;
     }
 }

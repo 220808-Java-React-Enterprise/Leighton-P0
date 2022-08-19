@@ -2,6 +2,7 @@ package com.revature.gomart.ui;
 
 import com.revature.gomart.models.User;
 import com.revature.gomart.services.UserService;
+import com.revature.gomart.daos.ProductDAO;
 
 public class LandingPage implements MenuIF {
 
@@ -16,6 +17,21 @@ public class LandingPage implements MenuIF {
 
     @Override
     public void start() {
-        System.out.println("\nWelcome back, " + user.getTitle() + " " + user.getFname());
+        System.out.println("\nWelcome back, " + user.getTitle() + " " + user.getFname() + "\nWe're still getting things set up, please be patient as we prepare a great experience for you!");
+        System.out.println("We hope to see you again!");
+
+
+    }
+
+    private void displayMeds() {
+
+    }
+
+    private void displayPokeballs() {
+
+    }
+
+    private void displayFieldItems() {
+
     }
 }
