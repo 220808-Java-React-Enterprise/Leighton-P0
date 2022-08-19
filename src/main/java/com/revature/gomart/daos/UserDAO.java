@@ -95,4 +95,17 @@ public class UserDAO implements CrudDAO<User> {
 
         return null;
     }
+
+    public String getEmail(String email) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT (email) FROM users WHERE username = ?");
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) return rs.getString("email");
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+        return null;
+    }
 }

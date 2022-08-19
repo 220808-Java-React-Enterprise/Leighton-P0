@@ -2,18 +2,23 @@ package com.revature.gomart.models;
 
 public class Product {
     private String id;
-    private String name;
+    private String itemName;
+    private String category;
     private int price;
     private int stock;
+    private String warehouse_id;
 
     public Product() {
 
     }
 
-    public Product(String name, int price, int stock) {
-        this.name = name;
+    public Product(String id, String itemName, String category, int price, int stock, String warehouse_id) {
+        this.id = id;
+        this.itemName = itemName;
+        this.category = category;
         this.price = price;
         this.stock = stock;
+        this.warehouse_id = warehouse_id;
     }
 
     public String getId() {
@@ -24,12 +29,20 @@ public class Product {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public int getPrice() {
@@ -48,13 +61,23 @@ public class Product {
         this.stock = stock;
     }
 
+    public String getWarehouse_id() {
+        return warehouse_id;
+    }
+
+    public void setWarehouse_id(String warehouse_id) {
+        this.warehouse_id = warehouse_id;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
-                "id='" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price + '\'' +
-                ", inventory=" + stock +
+                "id='" + id + '\'' +
+                ", itemName='" + itemName + '\'' +
+                ", category='" + category + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", warehouse_id='" + warehouse_id + '\'' +
                 '}';
     }
 }

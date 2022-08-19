@@ -75,6 +75,20 @@ public class LoginMenu implements MenuIF {
                     break exit;
                 } catch (InvalidUserException e) {
                     System.out.println(e.getMessage());
+                    System.out.println("1. Try again");
+                    System.out.println("2. Create an account");
+                    switch (scan.nextLine()) {
+                        case "1":
+                            login();
+                            break exit;
+                        case "2":
+                            Customer customer = signup();
+                            userService.register(customer);
+                            new LandingPage(customer, new UserService(new UserDAO())).start();
+                            break exit;
+                        default:
+                            System.out.println("Invalid input");
+                    }
                 }
             }
         }
@@ -167,6 +181,7 @@ public class LoginMenu implements MenuIF {
 
                         try {
                             userService.isValidEmail(email);
+                            userService.isDuplicateEmail(email);
                             break emailExit;
                         } catch (InvalidUserException e) {
                             System.out.println(e.getMessage());
@@ -200,7 +215,7 @@ public class LoginMenu implements MenuIF {
                                 customer = new Customer(UUID.randomUUID().toString(), title, fname, username, password, email, hometown);
                                 return customer;
                             case "n":
-                                System.out.println("\nPlease try signing up again");
+                                System.out.println("Please sign up again");
                                 break confirmExit;
                             default:
                                 System.out.println("\nResponse not recognized");
@@ -209,5 +224,30 @@ public class LoginMenu implements MenuIF {
                 }
             }
         }
+
     }
+//        private Customer updateInfo(String title, String fname, String username, String password, String email, String hometown) {
+//            Customer customer;
+//            Scanner scan = new Scanner(System.in);
+//
+//            System.out.println("What would you like to change? ");
+//            System.out.println("1. Title \n2. Name \n3. username \n4. password \n5. email \n6. hometown");
+//
+//            switch (scan.nextLine()) {
+//                case "1":
+//                    while (true) {
+//                        System.out.println("Please enter your title: ");
+//                        title = scan.nextLine();
+//
+//                        try {
+//                            userService.isValidTitle(title);
+//                            break;
+//                        } catch (InvalidUserException e) {
+//                            System.out.println(e.getMessage());
+//                        }
+//                    }
+//                default:
+//                    System.out.println("\nResponse not recognized");
+//            }
+//        }
 }

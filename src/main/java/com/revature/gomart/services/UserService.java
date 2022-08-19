@@ -16,7 +16,7 @@ public class UserService {
 
     public User login(String username, String password) {
         User user = userDAO.getByUsernameAndPassword(username, password);
-        if (user == null) throw new InvalidUserException("Incorrect username or password");
+        if (user == null) throw new InvalidUserException("User not found");
         return user;
     }
 
@@ -34,6 +34,7 @@ public class UserService {
         return true;
     }
 
+    // Chris email regex [A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}
     public boolean isValidEmail(String email) {
         if (!email.matches("^[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*$")) throw new InvalidUserException("\nPlease enter a valid email address");
         return true;
@@ -57,6 +58,11 @@ public class UserService {
 
     public boolean isDuplicateUsername(String username) {
         if (userDAO.getUsername(username) != null) throw new InvalidUserException("\nUsername not available!");
+        return true;
+    }
+
+    public boolean isDuplicateEmail(String email) {
+        if (userDAO.getUsername(email) != null) throw new InvalidUserException("\nUsername not available!");
         return true;
     }
 }

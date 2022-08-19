@@ -1,30 +1,42 @@
 package com.revature.gomart.models;
 
 public class Address {
-    private String name;
+    private String id;
+    private String fullName;
     private String street1;
     private String street2;
     private String city;
     private String region;
+    private String user_id;
 
     public Address() {
 
     }
 
-    public Address(String name, String street1, String street2, String city, String region) {
-        this.name = name;
+    public Address(String id, String name, String street1, String street2, String city, String region, String user_id) {
+        this.id = id;
+        this.fullName = name;
         this.street1 = street1;
         this.street2 = street2;
         this.city = city;
         this.region = region;
+        this.user_id = user_id;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String name) {
+        this.fullName = name;
     }
 
     public String getStreet1() {
@@ -59,10 +71,18 @@ public class Address {
         this.region = region;
     }
 
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
     @Override
     public String toString() {
         return "Address{" +
-                "name='" + name + '\'' +
+                "fullName='" + fullName + '\'' +
                 ", street1='" + street1 + '\'' +
                 ", street2='" + street2 + '\'' +
                 ", city='" + city + '\'' +
