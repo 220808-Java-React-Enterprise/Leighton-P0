@@ -4,6 +4,7 @@ import com.revature.gomart.models.*;
 import com.revature.gomart.services.ProductService;
 import com.revature.gomart.services.UserService;
 import com.revature.gomart.daos.*;
+import dnl.utils.text.table.TextTable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -66,23 +67,32 @@ public class LandingPage implements MenuIF {
 
     private void displayPotions() {
         List<Product> products = productService.getProductsByCategory("P");
-        String[] tableHeaders = {"Item", "Price"};
+        Scanner scan = new Scanner(System.in);
+
+        String[] tableHeaders = {"Item", "Price  "};
         Object[][] tableData = new Object[products.size()][2];
 
         for (int i = 0; i < products.size(); i++) {
-            for (int j = 0; j < 1; j++) {
+            for (int j = 0; j < 2; j++) {
                 if (j == 0) {
-                    tableData[i][j] = products.get(i).getItemName();
-                } if (j == 1) {
-                    tableData[i][j] = products.get(i).getPrice();
+                    tableData[i][j] = products.get(i).getItemName() + "  ";
+                } else {
+                    tableData[i][j] = Integer.toString(products.get(i).getPrice());
                 }
             }
         }
 
-//        TextTable tt
-//        for (int i = 0; i < products.size(); i++) {
-//            System.out.println((i+1) + ". " + products.get(i).getItemName());
-//        }
+        TextTable t = new TextTable(tableHeaders, tableData);
+        t.setAddRowNumbering(true);
+        t.printTable();
+
+        System.out.println("\nPlease select the item you would like to purchase\nPress x to go back at any time");
+
+        switch (scan.nextLine()) {
+            case "1":
+                System.out.println("\nHow many would you like to buy?");
+
+        }
     }
     private void displayMeds() {
         List<Product> products = productService.getProductsByCategory("M");

@@ -2,6 +2,7 @@ package com.revature.gomart.ui;
 
 import com.revature.gomart.daos.*;
 import com.revature.gomart.models.Customer;
+import com.revature.gomart.models.Order;
 import com.revature.gomart.models.User;
 import com.revature.gomart.services.*;
 import com.revature.gomart.utils.custom_exceptions.*;
@@ -13,7 +14,12 @@ public class LoginMenu implements MenuIF {
 
     private final UserService userService;
 
-    public LoginMenu(UserService userService) {this.userService = userService;}
+    private final OrderService orderService;
+
+    public LoginMenu(UserService userService, OrderService orderService) {
+        this.userService = userService;
+        this.orderService = orderService;
+    }
 
     @Override
     public void start() {
@@ -36,7 +42,9 @@ public class LoginMenu implements MenuIF {
                         break exit;
                     case "2":
                         Customer customer = signup();
+                        Order order = new Order(UUID.randomUUID().toString(), customer.getId());
                         userService.register(customer);
+                        orderService.createNew(order);
                         new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO())).start();
                         break exit;
                     case "3":
@@ -70,6 +78,14 @@ public class LoginMenu implements MenuIF {
                 try {
                     User user = userService.login(username, password);
                     new LandingPage(user, new UserService(new UserDAO()), new ProductService(new ProductDAO())).start();
+                    Order order = new Order(user.getId());
+
+                    if (orderService.retrieve(false, user.getId()) == null) {
+                        orderService.createNew(order);
+                    } else {
+                        orderService.retrieve(false, user.getId());
+                    }
+
                     break exit;
                 } catch (InvalidUserException e) {
                     System.out.println(e.getMessage());
