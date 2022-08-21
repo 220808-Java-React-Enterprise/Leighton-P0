@@ -115,7 +115,7 @@ public class LoginMenu extends PageServices implements MenuIF {
         Customer customer;
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Create your new account!");
+        System.out.println("Create your new account! \n");
 
         exit:
         {
@@ -123,7 +123,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                 titleExit:
                 {
                     while (true) {
-                        System.out.println("Please enter your title: ");
+                        System.out.println("\nPlease enter your title: ");
                         title = scan.nextLine();
 
                         try {
@@ -137,7 +137,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                 fnameExit:
                 {
                     while (true) {
-                        System.out.println("Please enter your name: ");
+                        System.out.println("\nPlease enter your name: ");
                         fname = scan.nextLine();
 
                         try {
@@ -151,7 +151,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                 usernameExit:
                 {
                     while (true) {
-                        System.out.println("Please create a username (3-15 characters): ");
+                        System.out.println("\nPlease create a username (3-15 characters): ");
                         username = scan.nextLine();
 
                         try {
@@ -167,12 +167,12 @@ public class LoginMenu extends PageServices implements MenuIF {
                 {
                     while (true) {
                         try {
-                            System.out.println("Please create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters): ");
+                            System.out.println("\nPlease create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters): ");
                             password = scan.nextLine();
 
                             userService.isValidPassword(password);
 
-                            System.out.println("Reenter your new password: ");
+                            System.out.println("\nReenter your new password: ");
                             password2 = scan.nextLine();
 
                             userService.isSamePassword(password2, password);
@@ -185,7 +185,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                 emailExit:
                 {
                     while (true) {
-                        System.out.println("Please enter your email: ");
+                        System.out.println("\nPlease enter your email: ");
                         email = scan.nextLine();
 
                         try {
@@ -200,7 +200,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                 hometownExit:
                 {
                     while (true) {
-                        System.out.println("Please enter your hometown: ");
+                        System.out.println("\nPlease enter your hometown: ");
                         hometown = scan.nextLine();
 
                         try {
@@ -211,30 +211,23 @@ public class LoginMenu extends PageServices implements MenuIF {
                         }
                     }
                 }
-                confirmExit:
-                {
-                    while (true) {
-                        System.out.println("Please review the following information: ");
-                        System.out.println("You are " + title + " " + fname);
-                        System.out.println("Username: " + username + "\nPassword: " + password + "\nEmail: " + email + "\nAnd you are from " + hometown);
-                        System.out.println("Is this correct? (y/n):");
+                System.out.println("\nPlease review the following information: ");
+                System.out.println("\nYou are " + title + " " + fname);
+                System.out.println("Username: " + username + "\nPassword: " + password + "\nEmail: " + email + "\nAnd you are from " + hometown);
+                System.out.println("\nIs this correct? (y/n):");
 
-                        switch (scan.nextLine().toLowerCase()) {
-                            case "y":
-                                customer = new Customer(UUID.randomUUID().toString(), title, fname, username, password, email, hometown);
-                                return customer;
-                            case "n":
-                                customer = new Customer(UUID.randomUUID().toString(), title, fname, username, password, email, hometown);
-                                Customer updatedCustomer = updateInfo(customer);
-                                return updatedCustomer;
-                            default:
-                                System.out.println("\nResponse not recognized");
-                        }
-                    }
+                switch (scan.nextLine().toLowerCase()) {
+                    case "y":
+                        customer = new Customer(UUID.randomUUID().toString(), title, fname, username, password, email, hometown);
+                        return customer;
+                    case "n":
+                        customer = new Customer(UUID.randomUUID().toString(), title, fname, username, password, email, hometown);
+                        return updateInfo(customer);
+                    default:
+                        System.out.println("\nResponse not recognized");
                 }
             }
         }
-
     }
 
     private Customer updateInfo(Customer customer) {
@@ -243,8 +236,8 @@ public class LoginMenu extends PageServices implements MenuIF {
         exit:
         {
             while (true) {
-                System.out.println("What would you like to change? ");
-                System.out.println("1. Title: " + customer.getTitle() +
+                System.out.println("\nWhat would you like to change? ");
+                System.out.println("\n1. Title: " + customer.getTitle() +
                         "\n2. Name: " + customer.getFname() +
                         "\n3. Username: " + customer.getUsername() +
                         "\n4. Password: " + customer.getPassword() +

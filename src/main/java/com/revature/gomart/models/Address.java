@@ -3,8 +3,7 @@ package com.revature.gomart.models;
 public class Address {
     private String id;
     private String fullName;
-    private String street1;
-    private String street2;
+    private String street;
     private String city;
     private String region;
     private String user_id;
@@ -13,11 +12,10 @@ public class Address {
 
     }
 
-    public Address(String id, String name, String street1, String street2, String city, String region, String user_id) {
+    public Address(String id, String name, String street, String city, String region, String user_id) {
         this.id = id;
         this.fullName = name;
-        this.street1 = street1;
-        this.street2 = street2;
+        this.street = street;
         this.city = city;
         this.region = region;
         this.user_id = user_id;
@@ -39,20 +37,12 @@ public class Address {
         this.fullName = name;
     }
 
-    public String getStreet1() {
-        return street1;
+    public String getStreet() {
+        return street;
     }
 
-    public void setStreet1(String street1) {
-        this.street1 = street1;
-    }
-
-    public String getStreet2() {
-        return street2;
-    }
-
-    public void setStreet2(String street2) {
-        this.street2 = street2;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getCity() {
@@ -83,8 +73,7 @@ public class Address {
     public String toString() {
         return "Address{" +
                 "fullName='" + fullName + '\'' +
-                ", street1='" + street1 + '\'' +
-                ", street2='" + street2 + '\'' +
+                ", street='" + street + '\'' +
                 ", city='" + city + '\'' +
                 ", region='" + region + '\'' +
                 '}';

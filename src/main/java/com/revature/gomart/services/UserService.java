@@ -73,4 +73,9 @@ public class UserService {
         if (userDAO.getUsername(email) != null) throw new InvalidUserException("\nUsername not available!");
         return true;
     }
+
+    public boolean isValidStreetAddress(String address) {
+        if (!address.matches("\\w+(\\s\\w+){2,}")) throw new InvalidUserException("\nStreet address not recognized");
+        return true;
+    }
 }
