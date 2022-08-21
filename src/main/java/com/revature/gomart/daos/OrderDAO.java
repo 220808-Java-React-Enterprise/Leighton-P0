@@ -123,13 +123,13 @@ public class OrderDAO implements CrudDAO<Order>{
         return 0;
     }
 
-    public void completeOrder (Order order) {
+    public void updateOrderStatus (Order order) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE orders SET (order_date, delivery_type, delivery_date, order_complete) = (?, ?, ?, ?) WHERE id = ?");
             ps.setDate(1, Date.valueOf(order.getOrderDate()));
             ps.setString(2, order.getDeliveryType());
             ps.setDate(3, Date.valueOf(order.getDeliveryDate()));
-            ps.setBoolean(4, true);
+            ps.setBoolean(4, order.isOrderComplete());
             ps.setString(5, order.getId());
 
             ps.executeUpdate();

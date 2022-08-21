@@ -33,10 +33,10 @@ public class AddressPage extends PageServices implements MenuIF {
                 } else {
                     System.out.println("Here's the Address we have on file for you: \n");
                     System.out.println(
-                            userAddress.getFullName() + " \n" +
-                            userAddress.getStreet() + " \n" +
-                            userAddress.getCity() + " \n" +
-                            userAddress.getRegion() + " \n"
+                            "Name: " + userAddress.getFullName() + " \n" +
+                            "Street: " + userAddress.getStreet() + " \n" +
+                            "City: " + userAddress.getCity() + " \n" +
+                            "Region: " + userAddress.getRegion() + " \n"
                     );
 
                     System.out.println("What would you like to do? \n");

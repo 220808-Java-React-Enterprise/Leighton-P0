@@ -33,5 +33,5 @@ public class OrderService {
         return orders;
     }
 
-    public void completeOrder(Order o) {orderDAO.completeOrder(o);}
+    public void updateOrderStatus(Order o) {orderDAO.updateOrderStatus(o);}
 }
