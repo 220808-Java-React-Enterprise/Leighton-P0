@@ -1,6 +1,7 @@
 package com.revature.gomart.daos;
 
 import com.revature.gomart.models.Customer;
+import com.revature.gomart.models.Product;
 import com.revature.gomart.models.User;
 import com.revature.gomart.utils.custom_exceptions.InvalidSQLException;
 import com.revature.gomart.utils.database.ConnectionFactory;
@@ -37,8 +38,21 @@ public class UserDAO implements CrudDAO<User> {
     }
 
     @Override
-    public void update(User obj) {
+    public void update(User user) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE user SET (title, fname, username, password, email, hometown) = (?, ?, ?, ?, ?, ?) WHERE id = ?");
+            ps.setString(1, user.getTitle());
+            ps.setString(2, user.getFname());
+            ps.setString(3, user.getUsername());
+            ps.setString(4, user.getPassword());
+            ps.setString(5, user.getEmail());
+            ps.setString(6, user.getHometown());
 
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
     }
 
     @Override
@@ -48,7 +62,24 @@ public class UserDAO implements CrudDAO<User> {
 
     @Override
     public User getById(String id) {
-        return null;
+        Customer cust = new Customer();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE id = ?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                cust.setId(rs.getString("id"));
+                cust.setTitle(rs.getString("title"));
+                cust.setFname(rs.getString("fname"));
+                cust.setPassword(rs.getString("password"));
+                cust.setEmail(rs.getString("email"));
+                cust.setHometown(rs.getString("hometown"));
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+        return cust;
     }
 
     @Override

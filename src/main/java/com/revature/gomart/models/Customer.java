@@ -4,7 +4,14 @@ public class Customer extends User {
 
     public Customer(){}
 
-    public Customer(String fname) {this.fname = fname;}
+    public Customer(String id) {
+        this.id = id;
+    }
+
+    public Customer(String id, String username) {
+        this.id = id;
+        this.username = username;
+    }
 
     public Customer(String id, String title, String fname, String username, String password, String email, String hometown) {
         this.id = id;

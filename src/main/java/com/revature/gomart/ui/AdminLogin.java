@@ -65,8 +65,8 @@ public class AdminLogin implements MenuIF{
                 password = scan.nextLine();
 
                 try {
-                    User customer = userService.login(username, password);
-                    new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO())).start();
+                    User manager = userService.login(username, password);
+                    new LandingPage(manager, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO()), new AddressService(new AddressDAO())).start();
                 } catch (InvalidUserException e) {
                     System.out.println(e.getMessage());
                 }

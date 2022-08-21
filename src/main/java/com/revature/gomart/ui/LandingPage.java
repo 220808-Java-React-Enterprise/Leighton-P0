@@ -2,26 +2,18 @@ package com.revature.gomart.ui;
 
 import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
-import com.revature.gomart.daos.*;
 import dnl.utils.text.table.TextTable;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class LandingPage implements MenuIF {
+public class LandingPage extends PageServices implements MenuIF {
 
     private final User user;
-    private final UserService userService;
-    private final ProductService productService;
-    private final OrderService orderService;
-    private final OPService opService;
 
-    public LandingPage(User user, UserService userService, ProductService productService, OrderService orderService, OPService opService) {
+    public LandingPage(User user, UserService userService, ProductService productService, OrderService orderService, OPService opService, AddressService addressService) {
+        super(userService, productService, orderService, opService, addressService);
         this.user = user;
-        this.userService = userService;
-        this.productService = productService;
-        this.orderService = orderService;
-        this.opService = opService;
     }
 
     @Override
@@ -54,17 +46,17 @@ public class LandingPage implements MenuIF {
                                 displayFieldItems();
                                 break choiceExit;
                             case "5":
-                                new OrderPage(user, userService, productService, orderService, opService).start();
+                                new OrderPage(user, userService, productService, orderService, opService, addressService).start();
                                 break exit;
                             case "6":
-                                new UserProfile(user, userService).start();
+                                new UserProfile(user, userService, productService, orderService, opService, addressService).start();
                                 break exit;
                             case "7":
                                 System.out.println("We hope to see you again");
                                 break exit;
                             default:
                                 System.out.println("Input not recognized.");
-                                break exit;
+                                break choiceExit;
                         }
                     }
                 }

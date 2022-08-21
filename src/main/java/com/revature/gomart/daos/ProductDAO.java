@@ -83,11 +83,11 @@ public class ProductDAO implements CrudDAO<Product>{
 
     public void reduceProductStock(Product product, int quantity) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps1 = con.prepareStatement("UPDATE products SET stock = ? WHERE id = ?");
-            ps1.setInt(1, (product.getStock() - quantity));
-            ps1.setString(2, product.getId());
+            PreparedStatement ps = con.prepareStatement("UPDATE products SET stock = ? WHERE id = ?");
+            ps.setInt(1, (product.getStock() - quantity));
+            ps.setString(2, product.getId());
 
-            ps1.executeUpdate();
+            ps.executeUpdate();
 
         } catch (SQLException e) {
             throw new InvalidSQLException("Error connecting to database");

@@ -16,8 +16,7 @@ public class OrderService {
 
     public Order retrieve(boolean orderComplete, String userId) {
         Order order = orderDAO.getExistingOrder(orderComplete, userId);
-        if (order == null) return null;
-        else return order;
+        return order;
     }
 
     public void updateCost(Order o, int q) {
@@ -27,5 +26,10 @@ public class OrderService {
     public int getCost(Order o) {
         int cost = orderDAO.getCost(o);
         return cost;
+    }
+
+    public List<Order> getPastOrders(String uid){
+        List<Order> orders = orderDAO.getPreviousOrders(true, uid);
+        return orders;
     }
 }

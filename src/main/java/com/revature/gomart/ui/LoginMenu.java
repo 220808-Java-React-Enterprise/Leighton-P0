@@ -1,24 +1,17 @@
 package com.revature.gomart.ui;
 
 import com.revature.gomart.daos.*;
-import com.revature.gomart.models.Customer;
-import com.revature.gomart.models.Order;
-import com.revature.gomart.models.User;
+import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import com.revature.gomart.utils.custom_exceptions.*;
 
 import java.util.Scanner;
 import java.util.UUID;
 
-public class LoginMenu implements MenuIF {
+public class LoginMenu extends PageServices implements MenuIF {
 
-    private final UserService userService;
-
-    private final OrderService orderService;
-
-    public LoginMenu(UserService userService, OrderService orderService) {
-        this.userService = userService;
-        this.orderService = orderService;
+    public LoginMenu(UserService userService, ProductService productService, OrderService orderService, OPService opService, AddressService addressService) {
+        super(userService, productService, orderService, opService, addressService);
     }
 
     @Override
@@ -45,7 +38,7 @@ public class LoginMenu implements MenuIF {
                         Order order = new Order(UUID.randomUUID().toString(), customer.getId());
                         userService.register(customer);
                         orderService.createNew(order);
-                        new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO())).start();
+                        new LandingPage(customer, userService, productService, orderService, opService, addressService).start();
                         break exit;
                     case "3":
                         System.out.println("We hope to see you again!");
@@ -85,7 +78,7 @@ public class LoginMenu implements MenuIF {
                         orderService.createNew(o);
                     }
 
-                    new LandingPage(user, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO())).start();
+                    new LandingPage(user, userService, productService, orderService, opService, addressService).start();
 
 
                     break exit;
@@ -100,7 +93,7 @@ public class LoginMenu implements MenuIF {
                         case "2":
                             Customer customer = signup();
                             userService.register(customer);
-                            new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO())).start();
+                            new LandingPage(customer, userService, productService, orderService, opService, addressService).start();
                             break exit;
                         default:
                             System.out.println("Invalid input");
@@ -231,8 +224,9 @@ public class LoginMenu implements MenuIF {
                                 customer = new Customer(UUID.randomUUID().toString(), title, fname, username, password, email, hometown);
                                 return customer;
                             case "n":
-                                System.out.println("Please sign up again");
-                                break confirmExit;
+                                customer = new Customer(UUID.randomUUID().toString(), title, fname, username, password, email, hometown);
+                                Customer updatedCustomer = updateInfo(customer);
+                                return updatedCustomer;
                             default:
                                 System.out.println("\nResponse not recognized");
                         }
@@ -242,28 +236,113 @@ public class LoginMenu implements MenuIF {
         }
 
     }
-//        private Customer updateInfo(String title, String fname, String username, String password, String email, String hometown) {
-//            Customer customer;
-//            Scanner scan = new Scanner(System.in);
-//
-//            System.out.println("What would you like to change? ");
-//            System.out.println("1. Title \n2. Name \n3. username \n4. password \n5. email \n6. hometown");
-//
-//            switch (scan.nextLine()) {
-//                case "1":
-//                    while (true) {
-//                        System.out.println("Please enter your title: ");
-//                        title = scan.nextLine();
-//
-//                        try {
-//                            userService.isValidTitle(title);
-//                            break;
-//                        } catch (InvalidUserException e) {
-//                            System.out.println(e.getMessage());
-//                        }
-//                    }
-//                default:
-//                    System.out.println("\nResponse not recognized");
-//            }
-//        }
+
+    private Customer updateInfo(Customer customer) {
+        Scanner scan = new Scanner(System.in);
+
+        exit:
+        {
+            while (true) {
+                System.out.println("What would you like to change? ");
+                System.out.println("1. Title: " + customer.getTitle() +
+                        "\n2. Name: " + customer.getFname() +
+                        "\n3. Username: " + customer.getUsername() +
+                        "\n4. Password: " + customer.getPassword() +
+                        "\n5. Email: " + customer.getEmail() +
+                        "\n6. Hometown: " + customer.getHometown() +
+                        "\nx. Go back");
+                String input = scan.nextLine();
+
+                choiceExit:
+                {
+                    while (true) {
+                        switch (input) {
+                            case "1":
+                                System.out.println("\nPlease enter your title: ");
+                                String title = scan.nextLine();
+
+                                try {
+                                    userService.isValidTitle(title);
+                                    customer.setTitle(title);
+                                    break choiceExit;
+                                } catch (InvalidUserException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            case "2":
+                                System.out.println("\nPlease enter your name: ");
+                                String fname = scan.nextLine();
+
+                                try {
+                                    userService.isValidName(fname);
+                                    customer.setFname(fname);
+                                    break choiceExit;
+                                } catch (InvalidUserException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            case "3":
+                                System.out.println("\nPlease create a username (3-15 characters): ");
+                                String username = scan.nextLine();
+
+                                try {
+                                    userService.isValidUsername(username);
+                                    userService.isDuplicateUsername(username);
+                                    customer.setUsername(username);
+                                    break choiceExit;
+                                } catch (InvalidUserException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            case "4":
+                                try {
+                                    System.out.println("\nPlease create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters): ");
+                                    String password = scan.nextLine();
+
+                                    userService.isValidPassword(password);
+
+                                    System.out.println("\nReenter your new password: ");
+                                    String password2 = scan.nextLine();
+
+                                    userService.isSamePassword(password2, password);
+
+                                    customer.setUsername(password);
+                                    break choiceExit;
+                                } catch (InvalidUserException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            case "5":
+                                System.out.println("\nPlease enter your email: ");
+                                String email = scan.nextLine();
+
+                                try {
+                                    userService.isValidEmail(email);
+                                    userService.isDuplicateEmail(email);
+
+                                    customer.setEmail(email);
+                                    break choiceExit;
+                                } catch (InvalidUserException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            case "6":
+                                System.out.println("\nPlease enter your hometown: ");
+                                String hometown = scan.nextLine();
+
+                                try {
+                                    userService.isValidKantoTown(hometown);
+
+                                    customer.setHometown(hometown);
+                                    break choiceExit;
+                                } catch (InvalidUserException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            case "x":
+                                break exit;
+                            default:
+                                System.out.println("\nResponse not recognized");
+
+                        }
+                    }
+                }
+            }
+        }
+        return customer;
+    }
 }

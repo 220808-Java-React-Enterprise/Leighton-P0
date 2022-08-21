@@ -68,6 +68,33 @@ public class OrderDAO implements CrudDAO<Order>{
         return null;
     }
 
+    public List<Order> getPreviousOrders(boolean b, String uid) {
+        List<Order> orders = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE order_complete = ? AND user_id = ?");
+            ps.setBoolean(1, b);
+            ps.setString(2, uid);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Order o = new Order(
+                    rs.getString("id"),
+                    rs.getInt("price"),
+                    rs.getDate("order_date").toLocalDate(),
+                    rs.getString("delivery_type"),
+                    rs.getDate("delivery_date").toLocalDate(),
+                    rs.getBoolean("order_complete"),
+                    rs.getString("user_id")
+                );
+                orders.add(o);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return orders;
+    }
+
     public void updateCost(Order o, int quantity) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE orders SET price = ? WHERE id = ?");

@@ -8,25 +8,14 @@ import dnl.utils.text.table.TextTable;
 import java.sql.SQLOutput;
 import java.util.List;
 
-public class OrderPage implements MenuIF{
+public class OrderPage extends PageServices implements MenuIF{
 
         private final User user;
-
-        private final UserService userService;
-
-        private final ProductService productService;
-
-        private final OrderService orderService;
-
-        private final OPService opService;
-
-        public OrderPage(User user, UserService userService, ProductService productService, OrderService orderService, OPService opService) {
+        public OrderPage(User user, UserService userService, ProductService productService, OrderService orderService, OPService opService, AddressService addressService) {
+            super(userService, productService, orderService, opService, addressService);
             this.user = user;
-            this.userService = userService;
-            this.productService = productService;
-            this.orderService = orderService;
-            this.opService = opService;
         }
+
     @Override
     public void start() {
 //        System.out.println("Cart is under construction; thank you for your patience.");

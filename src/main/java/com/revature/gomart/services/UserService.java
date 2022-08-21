@@ -20,6 +20,14 @@ public class UserService {
         return user;
     }
 
+    public User findById(String id) {
+        User user = userDAO.getById(id);
+        if (user == null) throw new InvalidUserException("User not found");
+        return user;
+    }
+
+    public void updateUser(User user) {userDAO.update(user);}
+
     public boolean isValidUsername(String username) {
         if (!username.matches("^[a-zA-Z0-9_-]{3,15}$")) throw new InvalidUserException("\nUsername must be between 3-15 characters and may only contain letters, numbers, dashes, and hyphens");
         return true;
