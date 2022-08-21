@@ -21,6 +21,11 @@ public class Address {
         this.user_id = user_id;
     }
 
+    public Address(String id, String user_id) {
+        this.id = id;
+        this.user_id = user_id;
+    }
+
     public String getId() {
         return id;
     }

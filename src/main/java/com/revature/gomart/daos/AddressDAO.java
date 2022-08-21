@@ -13,7 +13,7 @@ public class AddressDAO implements CrudDAO<Address>{
     @Override
     public void save(Address obj) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO users (id, full_name, street1, city, region, user_id) VALUES (?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO addresses (id, full_name, street, city, region, user_id) VALUES (?, ?, ?, ?, ?, ?)");
             ps.setString(1,obj.getId());
             ps.setString(2,obj.getFullName());
             ps.setString(3,obj.getStreet());
@@ -29,7 +29,7 @@ public class AddressDAO implements CrudDAO<Address>{
     @Override
     public void update(Address address) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("UPDATE addresses SET (full_name, street1, city, region) = (?, ?, ?, ?) WHERE id = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE addresses SET (full_name, street, city, region) = (?, ?, ?, ?) WHERE id = ?");
             ps.setString(1, address.getFullName());
             ps.setString(2, address.getStreet());
             ps.setString(3, address.getCity());

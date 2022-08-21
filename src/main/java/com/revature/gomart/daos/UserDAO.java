@@ -40,13 +40,14 @@ public class UserDAO implements CrudDAO<User> {
     @Override
     public void update(User user) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("UPDATE user SET (title, fname, username, password, email, hometown) = (?, ?, ?, ?, ?, ?) WHERE id = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE users SET (title, fname, username, password, email, hometown) = (?, ?, ?, ?, ?, ?) WHERE id = ?");
             ps.setString(1, user.getTitle());
             ps.setString(2, user.getFname());
             ps.setString(3, user.getUsername());
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getEmail());
             ps.setString(6, user.getHometown());
+            ps.setString(7, user.getId());
 
             ps.executeUpdate();
 
@@ -70,6 +71,7 @@ public class UserDAO implements CrudDAO<User> {
 
             while (rs.next()) {
                 cust.setId(rs.getString("id"));
+                cust.setUsername(rs.getString("username"));
                 cust.setTitle(rs.getString("title"));
                 cust.setFname(rs.getString("fname"));
                 cust.setPassword(rs.getString("password"));

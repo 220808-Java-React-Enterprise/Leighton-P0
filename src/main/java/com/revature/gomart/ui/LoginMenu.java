@@ -62,10 +62,10 @@ public class LoginMenu extends PageServices implements MenuIF {
         exit:
         {
             while (true) {
-                System.out.println("Please enter your username: ");
+                System.out.println("\nPlease enter your username: ");
                 username = scan.nextLine();
 
-                System.out.println("Please enter your password: ");
+                System.out.println("\nPlease enter your password: ");
                 password = scan.nextLine();
 
                 try {
@@ -236,8 +236,8 @@ public class LoginMenu extends PageServices implements MenuIF {
         exit:
         {
             while (true) {
-                System.out.println("\nWhat would you like to change? ");
-                System.out.println("\n1. Title: " + customer.getTitle() +
+                System.out.println("What would you like to change? ");
+                System.out.println("1. Title: " + customer.getTitle() +
                         "\n2. Name: " + customer.getFname() +
                         "\n3. Username: " + customer.getUsername() +
                         "\n4. Password: " + customer.getPassword() +
@@ -251,80 +251,92 @@ public class LoginMenu extends PageServices implements MenuIF {
                     while (true) {
                         switch (input) {
                             case "1":
-                                System.out.println("\nPlease enter your title: ");
-                                String title = scan.nextLine();
+                                while (true) {
+                                    System.out.println("\nPlease enter your title: ");
+                                    String title = scan.nextLine();
 
-                                try {
-                                    userService.isValidTitle(title);
-                                    customer.setTitle(title);
-                                    break choiceExit;
-                                } catch (InvalidUserException e) {
-                                    System.out.println(e.getMessage());
+                                    try {
+                                        userService.isValidTitle(title);
+                                        customer.setTitle(title);
+                                        break choiceExit;
+                                    } catch (InvalidUserException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
                             case "2":
-                                System.out.println("\nPlease enter your name: ");
-                                String fname = scan.nextLine();
+                                while (true) {
+                                    System.out.println("\nPlease enter your name: ");
+                                    String fname = scan.nextLine();
 
-                                try {
-                                    userService.isValidName(fname);
-                                    customer.setFname(fname);
-                                    break choiceExit;
-                                } catch (InvalidUserException e) {
-                                    System.out.println(e.getMessage());
+                                    try {
+                                        userService.isValidName(fname);
+                                        customer.setFname(fname);
+                                        break choiceExit;
+                                    } catch (InvalidUserException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
                             case "3":
-                                System.out.println("\nPlease create a username (3-15 characters): ");
-                                String username = scan.nextLine();
+                                while (true) {
+                                    System.out.println("\nPlease create a username (3-15 characters): ");
+                                    String username = scan.nextLine();
 
-                                try {
-                                    userService.isValidUsername(username);
-                                    userService.isDuplicateUsername(username);
-                                    customer.setUsername(username);
-                                    break choiceExit;
-                                } catch (InvalidUserException e) {
-                                    System.out.println(e.getMessage());
+                                    try {
+                                        userService.isValidUsername(username);
+                                        userService.isDuplicateUsername(username);
+                                        customer.setUsername(username);
+                                        break choiceExit;
+                                    } catch (InvalidUserException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
                             case "4":
-                                try {
-                                    System.out.println("\nPlease create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters): ");
-                                    String password = scan.nextLine();
+                                while (true) {
+                                    try {
+                                        System.out.println("\nPlease create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters): ");
+                                        String password = scan.nextLine();
 
-                                    userService.isValidPassword(password);
+                                        userService.isValidPassword(password);
 
-                                    System.out.println("\nReenter your new password: ");
-                                    String password2 = scan.nextLine();
+                                        System.out.println("\nReenter your new password: ");
+                                        String password2 = scan.nextLine();
 
-                                    userService.isSamePassword(password2, password);
+                                        userService.isSamePassword(password2, password);
 
-                                    customer.setUsername(password);
-                                    break choiceExit;
-                                } catch (InvalidUserException e) {
-                                    System.out.println(e.getMessage());
+                                        customer.setUsername(password);
+                                        break choiceExit;
+                                    } catch (InvalidUserException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
                             case "5":
-                                System.out.println("\nPlease enter your email: ");
-                                String email = scan.nextLine();
+                                while (true) {
+                                    System.out.println("\nPlease enter your email: ");
+                                    String email = scan.nextLine();
 
-                                try {
-                                    userService.isValidEmail(email);
-                                    userService.isDuplicateEmail(email);
+                                    try {
+                                        userService.isValidEmail(email);
+                                        userService.isDuplicateEmail(email);
 
-                                    customer.setEmail(email);
-                                    break choiceExit;
-                                } catch (InvalidUserException e) {
-                                    System.out.println(e.getMessage());
+                                        customer.setEmail(email);
+                                        break choiceExit;
+                                    } catch (InvalidUserException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
                             case "6":
-                                System.out.println("\nPlease enter your hometown: ");
-                                String hometown = scan.nextLine();
+                                while (true) {
+                                    System.out.println("\nPlease enter your hometown: ");
+                                    String hometown = scan.nextLine();
 
-                                try {
-                                    userService.isValidKantoTown(hometown);
+                                    try {
+                                        userService.isValidKantoTown(hometown);
 
-                                    customer.setHometown(hometown);
-                                    break choiceExit;
-                                } catch (InvalidUserException e) {
-                                    System.out.println(e.getMessage());
+                                        customer.setHometown(hometown);
+                                        break choiceExit;
+                                    } catch (InvalidUserException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
                             case "x":
                                 break exit;

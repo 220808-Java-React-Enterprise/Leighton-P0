@@ -25,8 +25,8 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
         exit:
         {
             while (true) {
-                if (pastOrders == null) {
-                    System.out.println("You have no past orders \n \n1. to return to your profile \n2. to return to the store page");
+                if (pastOrders.size() == 0) {
+                    System.out.println("You have no past orders \n \n1. Return to your profile \n2. Return to the store page");
                     String userChoice = scan.nextLine();
                         switch (userChoice) {
                             case "1":
@@ -37,20 +37,22 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
                                 break exit;
                     }
                 } else {
-                    TextTable table = printNewTable(pastOrders);
+                    TextTable table = printPastOrder(pastOrders);
                     table.printTable();
+                    System.out.println("\nWhat would you like to do?");
+                    System.out.println("\n1. Get order details \n2. Back to my Profile \n3. Back to the store page");
                 }
             }
         }
     }
 
-    public TextTable printNewTable(List<Order> orders) {
+    public TextTable printPastOrder(List<Order> orders) {
 
         String[] tableHeaders = {"Order date", "Total cost", "Delivery Type", "Delivery Date"};
         Object[][] tableData = new Object[orders.size()][4];
 
         for (int i = 0; i < orders.size(); i++) {
-            for (int j = 0; j < 2; j++) {
+            for (int j = 0; j < 4; j++) {
                 if (j == 0) {
                     tableData[i][j] = orders.get(i).getOrderDate() + "  ";
                 } if (j == 1) {

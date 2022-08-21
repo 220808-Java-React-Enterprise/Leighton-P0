@@ -6,6 +6,7 @@ import com.revature.gomart.utils.custom_exceptions.*;
 
 import java.sql.SQLOutput;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class AddressPage extends PageServices implements MenuIF {
 
@@ -27,7 +28,7 @@ public class AddressPage extends PageServices implements MenuIF {
         {
             while (true) {
                 if (userAddress == null) {
-                    System.out.println("Add your address");
+                    System.out.println("No address found \n");
                     userAddress = createNewAddress();
                     addressService.createNew(userAddress);
                 } else {
@@ -40,7 +41,7 @@ public class AddressPage extends PageServices implements MenuIF {
                     );
 
                     System.out.println("What would you like to do? \n");
-                    System.out.println("1. Edit my address \n2. Return to my profile \n3 Exit to store menu");
+                    System.out.println("1. Edit my address \n2. Return to my profile \n3. Exit to store menu");
 
                     choiceExit:
                     {
@@ -66,7 +67,7 @@ public class AddressPage extends PageServices implements MenuIF {
     }
 
     public Address createNewAddress() {
-        Address address = new Address();
+        Address address = new Address(UUID.randomUUID().toString(), user.getId());
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Create your new address \n");
@@ -77,7 +78,7 @@ public class AddressPage extends PageServices implements MenuIF {
                 fullNameExit:
                 {
                     while (true) {
-                        System.out.println("\nName: ");
+                        System.out.println("Name: ");
                         String name = scan.nextLine();
 
                         try{
@@ -122,10 +123,10 @@ public class AddressPage extends PageServices implements MenuIF {
                 regionExit:
                 {
                     while (true) {
-                        System.out.println("Region");
+                        System.out.println("\nRegion: ");
                         String region = scan.nextLine();
 
-                        if (region != "Kanto") {
+                        if (!region.equals("Kanto")) {
                             System.out.println("We apologize, but our services are currently limited to the Kanto region \nWe're working with our regional partners elsewhere to expand our services");
                         } else {
                             address.setRegion(region);
@@ -162,8 +163,8 @@ public class AddressPage extends PageServices implements MenuIF {
             while (true) {
                 System.out.println("\nWhat would you like to change?");
                 System.out.println("\n1. Name: " + address.getFullName() +
-                        "\n2. Street Address: " + address.getFullName() +
-                        "\n3. City: " + address.getFullName() +
+                        "\n2. Street Address: " + address.getStreet() +
+                        "\n3. City: " + address.getCity() +
                         "\nx. Go back");
 
                 choiceExit:
@@ -171,37 +172,43 @@ public class AddressPage extends PageServices implements MenuIF {
                     while (true) {
                         switch (scan.nextLine()) {
                             case "1":
-                                System.out.println("\nName: ");
-                                String name = scan.nextLine();
+                                while (true) {
+                                    System.out.println("\nName: ");
+                                    String name = scan.nextLine();
 
-                                try{
-                                    userService.isValidName(name);
-                                    address.setFullName(name);
-                                    break choiceExit;
-                                } catch (InvalidUserException e) {
-                                    System.out.println(e.getMessage());
+                                    try {
+                                        userService.isValidName(name);
+                                        address.setFullName(name);
+                                        break choiceExit;
+                                    } catch (InvalidUserException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
                             case "2":
-                                System.out.println("\nStreet address: ");
-                                String street = scan.nextLine();
+                                while (true) {
+                                    System.out.println("\nStreet address: ");
+                                    String street = scan.nextLine();
 
-                                try {
-                                    userService.isValidStreetAddress(street);
-                                    address.setStreet(street);
-                                    break choiceExit;
-                                } catch (InvalidUserException e) {
-                                    System.out.println(e.getMessage());
+                                    try {
+                                        userService.isValidStreetAddress(street);
+                                        address.setStreet(street);
+                                        break choiceExit;
+                                    } catch (InvalidUserException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
                             case "3":
-                                System.out.println("\nCity: ");
-                                String city = scan.nextLine();
+                                while (true) {
+                                    System.out.println("\nCity: ");
+                                    String city = scan.nextLine();
 
-                                try {
-                                    userService.isValidKantoTown(city);
-                                    address.setCity(city);
-                                    break choiceExit;
-                                } catch (InvalidUserException e) {
-                                    System.out.println(e.getMessage());
+                                    try {
+                                        userService.isValidKantoTown(city);
+                                        address.setCity(city);
+                                        break choiceExit;
+                                    } catch (InvalidUserException e) {
+                                        System.out.println(e.getMessage());
+                                    }
                                 }
                             case "x":
                                 break exit;
