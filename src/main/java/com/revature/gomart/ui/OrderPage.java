@@ -7,6 +7,7 @@ import dnl.utils.text.table.TextTable;
 
 import java.sql.SQLOutput;
 import java.util.List;
+import java.util.Scanner;
 
 public class OrderPage extends PageServices implements MenuIF{
 
@@ -18,41 +19,37 @@ public class OrderPage extends PageServices implements MenuIF{
 
     @Override
     public void start() {
-//        System.out.println("Cart is under construction; thank you for your patience.");
-        Order currentOrder = orderService.retrieve(false, user.getId());
-        List<OrderProduct> products = opService.getOrderProducts((currentOrder.getId()));
+        Scanner scan = new Scanner(System.in);
+        exit:
+        {
+            while (true) {
+                Order currentOrder = orderService.retrieve(false, user.getId());
+                List<OrderProduct> products = opService.getOrderProducts((currentOrder.getId()));
 
-        System.out.println("Your cart: \n");
+                System.out.println("Your cart: \n");
+                TextTable table = generateOrder(products, currentOrder);
+                table.setAddRowNumbering(false);
 
-        String[] tableHeaders = {"Item", "No.  ","Price "};
-        Object[][] tableData = new Object[products.size()][3];
-        int totPrice = 0;
+                table.printTable();
+                System.out.println("\nTotal cost: " + orderService.getCost(currentOrder) + "\n");
+                System.out.println("\nWhat would you like to do? \n1. Check out \n2. View Profile \n3. Back to store page");
 
-        for (int i = 0; i < products.size(); i++) {
-            String productName = products.get(i).getProduct_name();
-            int productQuantity = products.get(i).getProduct_quantity();
-            int productPrice = products.get(i).getProduct_price();
-            totPrice += (productQuantity * productPrice);
-
-            for (int j = 0; j < 3; j++) {
-                if (j == 0) {
-                    tableData[i][j] = productName + "  ";
-                } if (j == 1) {
-                    tableData[i][j] = productQuantity + "  ";
-                } if (j == 2) {
-                    tableData[i][j] = (productQuantity * productPrice) + "  ";
+                switch (scan.nextLine()) {
+                    case "1":
+                        new CheckoutPage(user, userService, productService, orderService, opService, addressService).start();
+                        break exit;
+                    case "2":
+                        new UserProfile(user, userService, productService, orderService, opService, addressService).start();
+                        break exit;
+                    case "3":
+                        new LandingPage(user, userService, productService, orderService, opService, addressService).start();
+                        break exit;
+                    default:
+                        System.out.println("Input not recognized");
                 }
+
             }
         }
-
-        currentOrder.setTot_price(totPrice);
-        orderService.updateCost(currentOrder, totPrice);
-        TextTable table = new TextTable(tableHeaders, tableData);
-        table.setAddRowNumbering(false);
-
-        table.printTable();
-        System.out.println("\nTotal cost: " + orderService.getCost(currentOrder));
-
     }
 
     public TextTable generateOrder(List<OrderProduct> products, Order order) {

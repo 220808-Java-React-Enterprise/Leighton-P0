@@ -3,6 +3,8 @@ package com.revature.gomart.services;
 import com.revature.gomart.daos.AddressDAO;
 import com.revature.gomart.models.*;
 
+import java.util.List;
+
 public class AddressService {
 
     private final AddressDAO addressDAO;
@@ -15,4 +17,6 @@ public class AddressService {
         Address addy = addressDAO.getByUserId(uid);
         return addy;
     }
+
+    public void updateAddress(Address a) {addressDAO.update(a);}
 }

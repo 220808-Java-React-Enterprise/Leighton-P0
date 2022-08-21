@@ -5,10 +5,8 @@ import com.revature.gomart.utils.custom_exceptions.InvalidSQLException;
 import com.revature.gomart.utils.database.ConnectionFactory;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddressDAO implements CrudDAO<Address>{
@@ -30,8 +28,21 @@ public class AddressDAO implements CrudDAO<Address>{
     }
 
     @Override
-    public void update(Address obj) {
+    public void update(Address address) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE addresses SET (full_name, street1, street2, city, region) = (?, ?, ?, ?, ?) WHERE id = ?");
+            ps.setString(1, address.getFullName());
+            ps.setString(2, address.getStreet1());
+            ps.setString(3, address.getStreet2());
+            ps.setString(4, address.getCity());
+            ps.setString(5, address.getRegion());
+            ps.setString(6, address.getUser_id());
 
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
     }
 
     @Override

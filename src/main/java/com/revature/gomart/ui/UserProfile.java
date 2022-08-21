@@ -29,8 +29,8 @@ public class UserProfile extends PageServices implements MenuIF{
                         "\nUsername: " + current.getUsername() +
                         "\nPassword: " + current.getPassword() +
                         "\nEmail: " + current.getEmail() +
-                        "\nHometown: " + current.getHometown());
-                System.out.println("\nWhat would you like to do? \n1. View past orders \n2. View address book \n3. Edit info \nx. Go back to main menu \n");
+                        "\nHometown: " + current.getHometown() + "\n");
+                System.out.println("\nWhat would you like to do? \n1. View Cart \n2. View past orders \n3. View address book \n4. Edit info \nx. Go back to main menu \n");
                 String userChoice = scan.nextLine();
 
                 choiceExit:
@@ -38,12 +38,15 @@ public class UserProfile extends PageServices implements MenuIF{
                     while (true) {
                         switch (userChoice) {
                             case "1":
+                                new OrderPage(user, userService, productService, orderService, opService, addressService).start();
+                                break exit;
+                            case "2":
                                 new OrderHistoryPage(user, userService, productService, orderService, opService, addressService).start();
                                 break exit;
-                            case "2" :
+                            case "3" :
                                 new AddressPage(user, userService, productService, orderService, opService, addressService).start();
                                 break exit;
-                            case "3":
+                            case "4":
                                 User updatedUser = updateInfo(user);
                                 userService.updateUser(updatedUser);
                                 break choiceExit;

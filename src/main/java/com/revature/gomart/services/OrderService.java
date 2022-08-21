@@ -32,4 +32,6 @@ public class OrderService {
         List<Order> orders = orderDAO.getPreviousOrders(true, uid);
         return orders;
     }
+
+    public void completeOrder(Order o) {orderDAO.completeOrder(o);}
 }

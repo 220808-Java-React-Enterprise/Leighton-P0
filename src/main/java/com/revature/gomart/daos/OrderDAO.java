@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,11 +97,11 @@ public class OrderDAO implements CrudDAO<Order>{
         return orders;
     }
 
-    public void updateCost(Order o, int quantity) {
+    public void updateCost(Order order, int quantity) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("UPDATE orders SET price = ? WHERE id = ?");
             ps.setInt(1, quantity);
-            ps.setString(2, o.getId());
+            ps.setString(2, order.getId());
 
             ps.executeUpdate();
 
@@ -108,10 +110,10 @@ public class OrderDAO implements CrudDAO<Order>{
         }
     }
 
-    public int getCost(Order o) {
+    public int getCost(Order order) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT price FROM orders WHERE id = ?");
-            ps.setString(1, o.getId());
+            ps.setString(1, order.getId());
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) return rs.getInt("price");
@@ -120,4 +122,21 @@ public class OrderDAO implements CrudDAO<Order>{
         }
         return 0;
     }
+
+    public void completeOrder (Order order) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE orders SET (order_date, delivery_type, delivery_date, order_complete) = (?, ?, ?, ?) WHERE id = ?");
+            ps.setDate(1, Date.valueOf(order.getOrderDate()));
+            ps.setString(2, order.getDeliveryType());
+            ps.setDate(3, Date.valueOf(order.getDeliveryDate()));
+            ps.setBoolean(4, true);
+            ps.setString(5, order.getId());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+    }
+
 }
