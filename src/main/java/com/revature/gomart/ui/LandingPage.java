@@ -4,16 +4,13 @@ import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import com.revature.gomart.daos.*;
 import dnl.utils.text.table.TextTable;
-import org.apache.commons.lang.StringUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class LandingPage implements MenuIF {
 
     private final User user;
-
     private final UserService userService;
     private final ProductService productService;
     private final OrderService orderService;
@@ -49,15 +46,15 @@ public class LandingPage implements MenuIF {
                                 break choiceExit;
                             case "2":
                                 displayMeds();
-
+                                break choiceExit;
                             case "3":
                                 displayPokeballs();
-
+                                break choiceExit;
                             case "4":
                                 displayFieldItems();
-
+                                break choiceExit;
                             case "5":
-                                new OrderPage(user, userService, productService).start();
+                                new OrderPage(user, userService, productService, orderService, opService).start();
                                 break exit;
                             case "6":
                                 new UserProfile(user, userService).start();
@@ -79,25 +76,12 @@ public class LandingPage implements MenuIF {
         List<Product> products = productService.getProductsByCategory("P");
         Scanner scan = new Scanner(System.in);
 
-        String[] tableHeaders = {"Item", "Price  "};
-        Object[][] tableData = new Object[products.size()][2];
-
-        for (int i = 0; i < products.size(); i++) {
-            for (int j = 0; j < 2; j++) {
-                if (j == 0) {
-                    tableData[i][j] = products.get(i).getItemName() + "  ";
-                } else {
-                    tableData[i][j] = Integer.toString(products.get(i).getPrice());
-                }
-            }
-        }
+        TextTable itemTable = printNewTable(products);
 
         exit:
         {
             while (true) {
-                TextTable t = new TextTable(tableHeaders, tableData);
-                t.setAddRowNumbering(true);
-                t.printTable();
+                itemTable.printTable();
 
                 System.out.println("\nPlease select the item you would like to purchase\nPress x to go back at any time");
                 String userChoice = scan.nextLine();
@@ -136,26 +120,160 @@ public class LandingPage implements MenuIF {
     }
     private void displayMeds() {
         List<Product> products = productService.getProductsByCategory("M");
+        Scanner scan = new Scanner(System.in);
 
-        for (int i = 0; i < products.size(); i++) {
-            System.out.println((i+1) + ". " + products.get(i).getItemName());
+        TextTable itemTable = printNewTable(products);
+
+        exit:
+        {
+            while (true) {
+                itemTable.printTable();
+
+                System.out.println("\nPlease select the item you would like to purchase\nPress x to go back at any time");
+                String userChoice = scan.nextLine();
+
+
+
+                medicinesExit:
+                {
+                    while (true) {
+                        switch (userChoice) {
+                            case "1":
+                                chooseProduct("M010");
+                                break medicinesExit;
+                            case "2":
+                                chooseProduct("M020");
+                                break medicinesExit;
+                            case "3":
+                                chooseProduct("M030");
+                                break medicinesExit;
+                            case "4":
+                                chooseProduct("M040");
+                                break medicinesExit;
+                            case "5":
+                                chooseProduct("M050");
+                                break medicinesExit;
+                            case "6":
+                                chooseProduct("M110");
+                                break medicinesExit;
+                            case "7":
+                                chooseProduct("M100");
+                                break medicinesExit;
+                            case "x":
+                                break exit;
+                            default:
+                                System.out.println("Input not recognized");
+                                break medicinesExit;
+                        }
+                    }
+                }
+            }
         }
     }
 
     private void displayPokeballs() {
         List<Product> products = productService.getProductsByCategory("B");
+        Scanner scan = new Scanner(System.in);
 
-        for (int i = 0; i < products.size(); i++) {
-            System.out.println((i+1) + ". " + products.get(i).getItemName());
+        TextTable itemTable = printNewTable(products);
+
+        exit:
+        {
+            while (true) {
+                itemTable.printTable();
+
+                System.out.println("\nPlease select the item you would like to purchase\nPress x to go back at any time");
+                String userChoice = scan.nextLine();
+
+
+
+                pokeballsExit:
+                {
+                    while (true) {
+                        switch (userChoice) {
+                            case "1":
+                                chooseProduct("B001");
+                                break pokeballsExit;
+                            case "2":
+                                chooseProduct("B010");
+                                break pokeballsExit;
+                            case "3":
+                                chooseProduct("B100");
+                                break pokeballsExit;
+                            case "x":
+                                break exit;
+                            default:
+                                System.out.println("Input not recognized");
+                                break pokeballsExit;
+                        }
+                    }
+                }
+            }
         }
     }
 
     private void displayFieldItems() {
         List<Product> products = productService.getProductsByCategory("F");
+        Scanner scan = new Scanner(System.in);
+
+        TextTable itemTable = printNewTable(products);
+
+        exit:
+        {
+            while (true) {
+                itemTable.printTable();
+
+                System.out.println("\nPlease select the item you would like to purchase\nPress x to go back at any time");
+                String userChoice = scan.nextLine();
+
+
+
+                fieldItemsExit:
+                {
+                    while (true) {
+                        switch (userChoice) {
+                            case "1":
+                                chooseProduct("F001");
+                                break fieldItemsExit;
+                            case "2":
+                                chooseProduct("F002");
+                                break fieldItemsExit;
+                            case "3":
+                                chooseProduct("F003");
+                                break fieldItemsExit;
+                            case "4" :
+                                chooseProduct("F111");
+                            case "x":
+                                break exit;
+                            default:
+                                System.out.println("Input not recognized");
+                                break fieldItemsExit;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public TextTable printNewTable(List<Product> products) {
+
+        String[] tableHeaders = {"Item", "Price  "};
+        Object[][] tableData = new Object[products.size()][2];
 
         for (int i = 0; i < products.size(); i++) {
-            System.out.println((i+1) + ". " + products.get(i).getItemName());
+            for (int j = 0; j < 2; j++) {
+                if (j == 0) {
+                    tableData[i][j] = products.get(i).getItemName() + "  ";
+                } else {
+                    tableData[i][j] = Integer.toString(products.get(i).getPrice());
+                }
+            }
         }
+
+        TextTable table = new TextTable(tableHeaders, tableData);
+        table.setAddRowNumbering(true);
+
+        return table;
     }
 
     public void chooseProduct(String id) {

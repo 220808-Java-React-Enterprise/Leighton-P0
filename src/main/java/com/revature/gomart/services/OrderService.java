@@ -19,4 +19,13 @@ public class OrderService {
         if (order == null) return null;
         else return order;
     }
+
+    public void updateCost(Order o, int q) {
+        orderDAO.updateCost(o,q);
+    }
+
+    public int getCost(Order o) {
+        int cost = orderDAO.getCost(o);
+        return cost;
+    }
 }

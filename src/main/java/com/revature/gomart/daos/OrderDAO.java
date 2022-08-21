@@ -67,4 +67,30 @@ public class OrderDAO implements CrudDAO<Order>{
 
         return null;
     }
+
+    public void updateCost(Order o, int quantity) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("UPDATE orders SET price = ? WHERE id = ?");
+            ps.setInt(1, quantity);
+            ps.setString(2, o.getId());
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+    }
+
+    public int getCost(Order o) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT price FROM orders WHERE id = ?");
+            ps.setString(1, o.getId());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) return rs.getInt("price");
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+        return 0;
+    }
 }

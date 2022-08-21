@@ -46,10 +46,6 @@ public class OpDAO implements CrudDAO<OrderProduct>{
             ps.setInt(1, Integer.sum(op.getProduct_quantity(), quantity));
             ps.setString(2, product.getId());
 
-            System.out.println("Current # of items in order: " + op.getProduct_quantity());
-            System.out.println("Adding " + quantity + " items to order");
-            System.out.println("Order now has " + Integer.sum(op.getProduct_quantity(), quantity) + " items");
-
             ps.executeUpdate();
 
         } catch (SQLException e) {

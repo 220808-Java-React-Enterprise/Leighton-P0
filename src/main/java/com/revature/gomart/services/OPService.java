@@ -3,6 +3,8 @@ package com.revature.gomart.services;
 import com.revature.gomart.daos.OpDAO;
 import com.revature.gomart.models.*;
 
+import java.util.List;
+
 public class OPService {
 
     private final OpDAO opDAO;
@@ -17,4 +19,10 @@ public class OPService {
     }
 
     public void addToProduct(OrderProduct op, Product p, int q) {opDAO.addQuantity(op, p, q);}
+
+    public List<OrderProduct> getOrderProducts(String id) {
+        List<OrderProduct> products = opDAO.getByOrderId(id);
+
+        return products;
+    }
 }
