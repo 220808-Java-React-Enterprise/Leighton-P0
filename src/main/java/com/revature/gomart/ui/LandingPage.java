@@ -67,6 +67,7 @@ public class LandingPage implements MenuIF {
                                 break exit;
                             default:
                                 System.out.println("Input not recognized.");
+                                break exit;
                         }
                     }
                 }
@@ -91,42 +92,46 @@ public class LandingPage implements MenuIF {
             }
         }
 
-        TextTable t = new TextTable(tableHeaders, tableData);
-        t.setAddRowNumbering(true);
-        t.printTable();
+        exit:
+        {
+            while (true) {
+                TextTable t = new TextTable(tableHeaders, tableData);
+                t.setAddRowNumbering(true);
+                t.printTable();
 
-        System.out.println("\nPlease select the item you would like to purchase\nPress x to go back at any time");
-        String userChoice = scan.nextLine();
+                System.out.println("\nPlease select the item you would like to purchase\nPress x to go back at any time");
+                String userChoice = scan.nextLine();
 
-        switch (userChoice) {
-            case "1":
-                potionExit:
+
+
+                potionsExit:
                 {
                     while (true) {
-                        System.out.println("\nHow many would you like to buy?");
-                        String quantityChoice = scan.nextLine();
-                        try {
-                            int input = Integer.parseInt(quantityChoice);
-                            Order currentOrder = orderService.retrieve(false, user.getId());
-                            Product currentProduct = productService.getProductbyId("M001");
-
-                            if (input > currentProduct.getStock()) {
-                                System.out.println("We apologize, but we currently do not have that many items in stock.");
-                            } else if (opService.checkForProduct(currentOrder, currentProduct) != null) {
-                                OrderProduct existingOP = opService.checkForProduct(currentOrder, currentProduct);
-                                opService.addToProduct(existingOP, currentProduct, input);
-                                productService.reduceProductStock(currentProduct, input);
-                                break potionExit;
-                            } else {
-                                opService.saveToOP(currentOrder, currentProduct, input);
-                                productService.reduceProductStock(currentProduct, input);
-                                break potionExit;
-                            }
-                        } catch (NumberFormatException e) {
-                            System.out.println("please input a number");
+                        switch (userChoice) {
+                            case "1":
+                                chooseProduct("M001");
+                                break potionsExit;
+                            case "2":
+                                chooseProduct("M002");
+                                break potionsExit;
+                            case "3":
+                                chooseProduct("M003");
+                                break potionsExit;
+                            case "4":
+                                chooseProduct("M004");
+                                break potionsExit;
+                            case "5":
+                                chooseProduct("M011");
+                                break potionsExit;
+                            case "x":
+                                break exit;
+                            default:
+                                System.out.println("Input not recognized");
+                                break potionsExit;
                         }
                     }
                 }
+            }
         }
     }
     private void displayMeds() {
@@ -150,6 +155,30 @@ public class LandingPage implements MenuIF {
 
         for (int i = 0; i < products.size(); i++) {
             System.out.println((i+1) + ". " + products.get(i).getItemName());
+        }
+    }
+
+    public void chooseProduct(String id) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("\nHow many would you like to buy?");
+        String quantityChoice = scan.nextLine();
+        try {
+            int input = Integer.parseInt(quantityChoice);
+            Order currentOrder = orderService.retrieve(false, user.getId());
+            Product currentProduct = productService.getProductbyId(id);
+            OrderProduct existingOP = opService.checkForProduct(currentOrder, currentProduct);
+
+            if (input > currentProduct.getStock()) {
+                System.out.println("We apologize, but we currently do not have that many items in stock.");
+            } else if (opService.checkForProduct(currentOrder, currentProduct) != null) {
+                opService.addToProduct(existingOP, currentProduct, input);
+                productService.reduceProductStock(currentProduct, input);
+            } else {
+                opService.saveToOP(currentOrder, currentProduct, input);
+                productService.reduceProductStock(currentProduct, input);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("please input a number");
         }
     }
 }

@@ -16,5 +16,5 @@ public class OPService {
         return op;
     }
 
-    public void addToProduct(OrderProduct op, Product p, int q) {opDAO.update(op, p, q);}
+    public void addToProduct(OrderProduct op, Product p, int q) {opDAO.addQuantity(op, p, q);}
 }

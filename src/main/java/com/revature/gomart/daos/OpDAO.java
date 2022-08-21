@@ -40,11 +40,15 @@ public class OpDAO implements CrudDAO<OrderProduct>{
         }
     }
 
-    public void update(OrderProduct op, Product product, int quantity) {
+    public void addQuantity(OrderProduct op, Product product, int quantity) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("UPDATE order_products SET product_quantity = ? WHERE id = ?");
-            ps.setInt(1, (op.getProduct_quantity() + quantity));
+            PreparedStatement ps = con.prepareStatement("UPDATE order_products SET product_quantity = ? WHERE product_id = ?");
+            ps.setInt(1, Integer.sum(op.getProduct_quantity(), quantity));
             ps.setString(2, product.getId());
+
+            System.out.println("Current # of items in order: " + op.getProduct_quantity());
+            System.out.println("Adding " + quantity + " items to order");
+            System.out.println("Order now has " + Integer.sum(op.getProduct_quantity(), quantity) + " items");
 
             ps.executeUpdate();
 
