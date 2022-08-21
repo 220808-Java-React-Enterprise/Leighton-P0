@@ -4,15 +4,19 @@ public class Product {
     private String id;
     private String itemName;
     private String category;
-    private Integer price;
-    private Integer stock;
+    private int price;
+    private int stock;
     private String warehouse_id;
 
     public Product() {
 
     }
 
-    public Product(String id, String itemName, String category, Integer price, Integer stock, String warehouse_id) {
+    public Product(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public Product(String id, String itemName, String category, int price, int stock, String warehouse_id) {
         this.id = id;
         this.itemName = itemName;
         this.category = category;
@@ -45,11 +49,11 @@ public class Product {
         this.category = category;
     }
 
-    public Integer getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

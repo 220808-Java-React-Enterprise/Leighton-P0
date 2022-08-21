@@ -45,7 +45,7 @@ public class LoginMenu implements MenuIF {
                         Order order = new Order(UUID.randomUUID().toString(), customer.getId());
                         userService.register(customer);
                         orderService.createNew(order);
-                        new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO())).start();
+                        new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO())).start();
                         break exit;
                     case "3":
                         System.out.println("We hope to see you again!");
@@ -77,14 +77,16 @@ public class LoginMenu implements MenuIF {
 
                 try {
                     User user = userService.login(username, password);
-                    new LandingPage(user, new UserService(new UserDAO()), new ProductService(new ProductDAO())).start();
-                    Order order = new Order(user.getId());
 
-                    if (orderService.retrieve(false, user.getId()) == null) {
-                        orderService.createNew(order);
-                    } else {
-                        orderService.retrieve(false, user.getId());
+                    Order order = orderService.retrieve(false, user.getId());
+                    if (order == null) {
+                        System.out.println("Creating a cart for you");
+                        Order o = new Order(UUID.randomUUID().toString(), user.getId());
+                        orderService.createNew(o);
                     }
+
+                    new LandingPage(user, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO())).start();
+
 
                     break exit;
                 } catch (InvalidUserException e) {
@@ -98,7 +100,7 @@ public class LoginMenu implements MenuIF {
                         case "2":
                             Customer customer = signup();
                             userService.register(customer);
-                            new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO())).start();
+                            new LandingPage(customer, new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO())).start();
                             break exit;
                         default:
                             System.out.println("Invalid input");

@@ -59,7 +59,7 @@ public class OrderDAO implements CrudDAO<Order>{
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new Order(rs.getBoolean("order_complete"), rs.getString("user_id"));
+                return new Order(rs.getString("id"), rs.getBoolean("order_complete"), rs.getString("user_id"));
             }
         } catch (SQLException e) {
             throw new InvalidSQLException("Error connecting to database");

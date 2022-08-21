@@ -18,5 +18,13 @@ public class ProductService {
         return products;
     }
 
+    public Product getProductbyId(String id) {
+        Product product = productDAO.getById(id);
+        if (product == null) throw new InvalidProductException("Product not found");
+        return product;
+    }
+
+    public void reduceProductStock (Product p, int q) {productDAO.reduceProductStock(p, q);}
+
 
 }

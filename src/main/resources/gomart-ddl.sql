@@ -51,6 +51,7 @@ create table products (
 	price int not null,
 	stock int not null,
 	warehouse_id varchar not null,
+	sort int not null,
 
 	constraint pk_product_id
 		primary key (id),
@@ -61,11 +62,11 @@ create table products (
 
 create table orders (
 	id varchar not null,
-	order_number serial not null,
-	price int not null,
-	order_date date not null,
-	delivery_type varchar not null,
-	delivery_date varchar not null,
+	price int null,
+	order_date date null,
+	delivery_type varchar null,
+	delivery_date varchar null,
+	order_complete bool not null,
 	user_id varchar not null,
 
 	constraint pk_order_id
@@ -77,6 +78,9 @@ create table orders (
 
 create table order_products (
 	id varchar not null,
+	product_name varchar not null,
+	product_price int not null,
+	product_quantity int not null,
 	order_id varchar not null,
 	product_id varchar not null,
 

@@ -36,6 +36,11 @@ public class Order {
         this.orderComplete = orderComplete;
         this.user_id = user_id;
     }
+    public Order(String id, boolean orderComplete, String user_id) {
+        this.id = id;
+        this.orderComplete = orderComplete;
+        this.user_id = user_id;
+    }
 
     public String getId() {
         return id;
