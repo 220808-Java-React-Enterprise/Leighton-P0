@@ -30,7 +30,7 @@ public class CheckoutPage extends PageServices implements MenuIF {
         {
             while (true) {
                 if (addressService.retrieve(user.getId()) == null) {
-                    new AddressPage(user, userService, productService, orderService, opService, addressService).start();
+                    new AddressPage(user, userService, productService, orderService, opService, addressService).createNewAddress();
                 } else {
                     choiceExit:
                     {
@@ -86,6 +86,11 @@ public class CheckoutPage extends PageServices implements MenuIF {
                             currentOrder.setOrderComplete(true);
                             orderService.updateOrderStatus(currentOrder);
                             System.out.println("\nThank you for your purchase! \nTo see your order details, check your order history in your profile.");
+                            orderService.createNew(new Order(
+                                    UUID.randomUUID().toString(),
+                                    false,
+                                    user.getId()
+                            ));
                             new LandingPage(user, userService, productService, orderService, opService, addressService).start();
                             break exit;
                         case "2":
@@ -95,14 +100,6 @@ public class CheckoutPage extends PageServices implements MenuIF {
                     }
                 }
             }
-        }
-
-        if (orderService.retrieve(false, user.getId()) == null) {
-            orderService.createNew(new Order(
-                UUID.randomUUID().toString(),
-                false,
-                user.getId()
-            ));
         }
     }
 }

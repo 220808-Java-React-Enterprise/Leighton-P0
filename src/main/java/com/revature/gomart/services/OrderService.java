@@ -28,8 +28,8 @@ public class OrderService {
         return cost;
     }
 
-    public List<Order> getPastOrders(String uid){
-        List<Order> orders = orderDAO.getPreviousOrders(true, uid);
+    public List<Order> getPastOrdersDescending(String uid){
+        List<Order> orders = orderDAO.getPreviousOrdersDescending(true, uid);
         return orders;
     }
 

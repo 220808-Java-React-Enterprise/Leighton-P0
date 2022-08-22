@@ -23,9 +23,9 @@ public class LoginMenu extends PageServices implements MenuIF {
             while (true) {
                 System.out.println("\nWelcome to the Pokemart");
                 System.out.println("Press one of the following keys to continue:");
-                System.out.println("[1] Login to an existing account");
-                System.out.println("[2] Create a new account");
-                System.out.println("[3] Exit the Pokemart");
+                System.out.println("1. Login to an existing account");
+                System.out.println("2. Create a new account");
+                System.out.println("3. Exit the Pokemart");
 
                 System.out.println("\nEnter:");
 

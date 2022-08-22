@@ -21,7 +21,7 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
     @Override
     public void start() {
         Scanner scan = new Scanner(System.in);
-        List<Order> pastOrders = orderService.getPastOrders(user.getId());
+        List<Order> pastOrders = orderService.getPastOrdersDescending(user.getId());
 
         exit:
         {
@@ -38,6 +38,7 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
                             break exit;
                     }
                 } else {
+                    System.out.println(pastOrders.size());
                     TextTable table = printPastOrder(pastOrders);
                     table.printTable();
                     System.out.println("\nWhat would you like to do?");

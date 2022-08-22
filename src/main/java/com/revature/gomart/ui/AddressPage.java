@@ -22,8 +22,6 @@ public class AddressPage extends PageServices implements MenuIF {
     public void start() {
         Scanner scan = new Scanner(System.in);
         Address userAddress = addressService.retrieve(user.getId());
-//        System.out.println("We're working on it!");
-//        new UserProfile(user, userService, productService, orderService, opService, addressService).start();
         exit:
         {
             while (true) {

@@ -70,15 +70,15 @@ public class OrderDAO implements CrudDAO<Order>{
         return null;
     }
 
-    public List<Order> getPreviousOrders(boolean b, String uid) {
+    public List<Order> getPreviousOrdersDescending(boolean b, String uid) {
         List<Order> orders = new ArrayList<>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE order_complete = ? AND user_id = ? ORDER BY order_date DESC");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE (order_complete, user_id) = (?, ?) ORDER BY order_date ASC");
             ps.setBoolean(1, b);
             ps.setString(2, uid);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 Order o = new Order(
                     rs.getString("id"),
                     rs.getInt("price"),
