@@ -46,7 +46,7 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
                     TextTable table = printPastOrder(pastOrders);
                     table.printTable();
                     System.out.println("\nWhat would you like to do?");
-                    System.out.println("\n1. Get order details \n3. Back to my Profile \n4. Back to the store page");
+                    System.out.println("\n1. Get order details \n2. Back to my Profile \n3. Back to the store page");
                     switch (scan.nextLine()) {
                         case "1": {
                             while (true) {

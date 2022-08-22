@@ -32,37 +32,34 @@ public class LandingPage extends PageServices implements MenuIF {
                 String productChoice = scan.nextLine();
                 choiceExit:
                 {
-                    while (true) {
-                        switch (productChoice) {
-                            case "1":
-                                displayPotions();
-                                break choiceExit;
-                            case "2":
-                                displayMeds();
-                                break choiceExit;
-                            case "3":
-                                displayPokeballs();
-                                break choiceExit;
-                            case "4":
-                                displayFieldItems();
-                                break choiceExit;
-                            case "5":
-                                new OrderPage(user, userService, productService, orderService, opService, addressService).start();
-                                break exit;
-                            case "6":
-                                new UserProfile(user, userService, productService, orderService, opService, addressService).start();
-                                break exit;
-                            case "7":
-                                System.out.println("\nThank you for shopping with us!");
-                                new LoginMenu(new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO()), new AddressService(new AddressDAO())).start();
-                                break exit;
-                            case "8":
-                                System.out.println("\nThank you for shopping with us! \nWe hope to see you again!");
-                                break exit;
-                            default:
-                                System.out.println("Input not recognized.");
-                                break choiceExit;
-                        }
+                    switch (productChoice) {
+                        case "1":
+                            displayPotions();
+                            break choiceExit;
+                        case "2":
+                            displayMeds();
+                            break choiceExit;
+                        case "3":
+                            displayPokeballs();
+                            break choiceExit;
+                        case "4":
+                            displayFieldItems();
+                            break choiceExit;
+                        case "5":
+                            new OrderPage(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        case "6":
+                            new UserProfile(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        case "7":
+                            System.out.println("\nThank you for shopping with us!");
+                            new LoginMenu(new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO()), new AddressService(new AddressDAO())).start();
+                            break exit;
+                        case "8":
+                            System.out.println("\nThank you for shopping with us! \nWe hope to see you again!");
+                            break exit;
+                        default:
+                            System.out.println("Input not recognized.");
                     }
                 }
             }
@@ -82,7 +79,6 @@ public class LandingPage extends PageServices implements MenuIF {
 
                 System.out.println("\nPlease select the item you would like to purchase\nPress x to go back at any time");
                 String userChoice = scan.nextLine();
-
 
 
                 potionsExit:
@@ -115,6 +111,7 @@ public class LandingPage extends PageServices implements MenuIF {
             }
         }
     }
+
     private void displayMeds() {
         List<Product> products = productService.getProductsByCategory("M");
         Scanner scan = new Scanner(System.in);
@@ -128,7 +125,6 @@ public class LandingPage extends PageServices implements MenuIF {
 
                 System.out.println("\nPlease select the item you would like to purchase\nPress x to go back at any time");
                 String userChoice = scan.nextLine();
-
 
 
                 medicinesExit:
@@ -183,7 +179,6 @@ public class LandingPage extends PageServices implements MenuIF {
                 String userChoice = scan.nextLine();
 
 
-
                 pokeballsExit:
                 {
                     while (true) {
@@ -224,7 +219,6 @@ public class LandingPage extends PageServices implements MenuIF {
                 String userChoice = scan.nextLine();
 
 
-
                 fieldItemsExit:
                 {
                     while (true) {
@@ -238,7 +232,7 @@ public class LandingPage extends PageServices implements MenuIF {
                             case "3":
                                 chooseProduct("F003");
                                 break fieldItemsExit;
-                            case "4" :
+                            case "4":
                                 chooseProduct("F111");
                             case "x":
                                 break exit;

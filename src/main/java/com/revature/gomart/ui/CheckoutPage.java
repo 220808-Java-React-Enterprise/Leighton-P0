@@ -37,13 +37,13 @@ public class CheckoutPage extends PageServices implements MenuIF {
                 {
                     while (true) {
                         System.out.println("Checkout: \n");
-                        System.out.println("Is this the address you wish to ship to?");
+                        System.out.println("\nPlease confirm your shipping address.");
                         Address userAddress = addressService.retrieve(user.getId());
                         System.out.println(
                                 "Name: " + userAddress.getFullName() + " \n" +
-                                        "Street: " + userAddress.getStreet() + " \n" +
-                                        "City: " + userAddress.getCity() + " \n" +
-                                        "Region: " + userAddress.getRegion() + " \n"
+                                "Street: " + userAddress.getStreet() + " \n" +
+                                "City: " + userAddress.getCity() + " \n" +
+                                "Region: " + userAddress.getRegion() + " \n"
                         );
                         System.out.println("(y/n): \n");
                         switch (scan.nextLine()) {

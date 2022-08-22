@@ -141,4 +141,21 @@ public class UserDAO implements CrudDAO<User> {
         }
         return null;
     }
+
+    public User getAdmin (String username, String password) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE (username, password, admin) = (?, ?, ?)");
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ps.setBoolean(3, true);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+                return new Customer(rs.getString("id"), rs.getString("title"), rs.getString("fname"), rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("hometown"));
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred when trying to save to the database.");
+        }
+
+        return null;
+    }
 }

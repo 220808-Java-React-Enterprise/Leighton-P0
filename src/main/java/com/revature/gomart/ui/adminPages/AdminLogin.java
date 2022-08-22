@@ -1,16 +1,17 @@
-package com.revature.gomart.ui;
+package com.revature.gomart.ui.adminPages;
 
 import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
-import com.revature.gomart.ui.adminPages.AdminLogin;
+import com.revature.gomart.ui.LoginMenu;
+import com.revature.gomart.ui.MenuIF;
 import com.revature.gomart.utils.custom_exceptions.*;
 
 import java.util.Scanner;
 import java.util.UUID;
 
-public class LoginMenu extends PageServices implements MenuIF {
+public class AdminLogin extends PageServices implements MenuIF {
 
-    public LoginMenu(UserService userService, ProductService productService, OrderService orderService, OPService opService, AddressService addressService) {
+    public AdminLogin(UserService userService, ProductService productService, OrderService orderService, OPService opService, AddressService addressService) {
         super(userService, productService, orderService, opService, addressService);
     }
 
@@ -21,11 +22,11 @@ public class LoginMenu extends PageServices implements MenuIF {
         exit:
         {
             while (true) {
-                System.out.println("\nWelcome to the Pokemart");
+                System.out.println("\nManager menu");
                 System.out.println("Press one of the following keys to continue:");
-                System.out.println("1. Login to an existing account");
-                System.out.println("2. Create a new account");
-                System.out.println("3. Exit the Pokemart");
+                System.out.println("[1] Login to an existing manager account");
+                System.out.println("[2] Register as a new manager");
+                System.out.println("[3] Exit the Pokemart");
 
                 System.out.println("\nEnter:");
 
@@ -34,30 +35,24 @@ public class LoginMenu extends PageServices implements MenuIF {
                         login();
                         break exit;
                     case "2":
-                        Customer customer = signup();
-                        Order order = new Order(UUID.randomUUID().toString(), customer.getId());
-                        userService.register(customer);
-                        orderService.createNew(order);
-                        new LandingPage(customer, userService, productService, orderService, opService, addressService).start();
+                        Manager manager = signup();
+                        new AdminMenu(manager, userService, productService, orderService, opService, addressService).start();
                         break exit;
                     case "3":
                         System.out.println("We hope to see you again!");
                         break exit;
-                    case "+":
-                        new AdminLogin(userService, productService, orderService, opService, addressService).start();
-                    default:
-                        System.out.println("\nSorry, I didn't catch that\nPlease select either 1, 2, or 3");
+
                 }
             }
         }
     }
 
-    public void login() {
+    private void login() {
         String username = "";
         String password = "";
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Signing in existing user");
+        System.out.println("\nSigning in existing user");
 
         exit:
         {
@@ -69,75 +64,54 @@ public class LoginMenu extends PageServices implements MenuIF {
                 password = scan.nextLine();
 
                 try {
-                    User user = userService.login(username, password);
+                    User manager = userService.login(username, password);
+                    userService.isValidAdmin(username, password);
+                    new AdminMenu(manager, userService, productService, orderService, opService, addressService).start();
 
-                    Order order = orderService.retrieve(false, user.getId());
-                    if (order == null) {
-                        System.out.println("Creating a cart for you");
-                        Order o = new Order(UUID.randomUUID().toString(), user.getId());
-                        orderService.createNew(o);
-                    }
-
-                    new LandingPage(user, userService, productService, orderService, opService, addressService).start();
-
-
-                    break exit;
                 } catch (InvalidUserException e) {
                     System.out.println(e.getMessage());
-                    System.out.println("1. Try again");
-                    System.out.println("2. Create an account");
-                    switch (scan.nextLine()) {
-                        case "1":
-                            login();
-                            break exit;
-                        case "2":
-                            Customer customer = signup();
-                            userService.register(customer);
-                            new LandingPage(customer, userService, productService, orderService, opService, addressService).start();
-                            break exit;
-                        default:
-                            System.out.println("Input not recognized");
+                    if (userService.isValidAdmin(username, password)) {
+                        System.out.println("1. Try again");
+                        System.out.println("2. Log in as a customer");
+                        System.out.println("3. Back to manager menu");
+                        switch (scan.nextLine()) {
+                            case "1":
+                                login();
+                                break exit;
+                            case "2":
+                                new LoginMenu(userService, productService, orderService, opService, addressService).login();
+                                break exit;
+                            case "3":
+                                new AdminLogin(userService, productService, orderService, opService, addressService);
+                                break exit;
+                            default:
+                                System.out.println("Input not recognized");
+                        }
                     }
                 }
             }
         }
     }
 
-    public Customer signup() {
-        String title = "";
+    private Manager signup() {
         String fname = "";
         String username = "";
         String password = "";
         String password2 = "";
         String email = "";
-        String hometown = "";
 
-        Customer customer;
+        Manager manager;
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Create your new account! \n");
+        System.out.println("Create new admin account:");
 
         exit:
         {
             while (true) {
-                titleExit:
-                {
-                    while (true) {
-                        System.out.println("\nPlease enter your title: ");
-                        title = scan.nextLine();
-
-                        try {
-                            userService.isValidTitle(title);
-                            break titleExit;
-                        } catch (InvalidUserException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
-                }
                 fnameExit:
                 {
                     while (true) {
-                        System.out.println("\nPlease enter your name: ");
+                        System.out.println("Please enter your name: ");
                         fname = scan.nextLine();
 
                         try {
@@ -151,12 +125,12 @@ public class LoginMenu extends PageServices implements MenuIF {
                 usernameExit:
                 {
                     while (true) {
-                        System.out.println("\nPlease create a username (3-15 characters): ");
+                        System.out.println("Please create a username (8-20 characters)");
                         username = scan.nextLine();
 
                         try {
                             userService.isValidUsername(username);
-                            userService.isDuplicateUsername(username);
+                            // userService.isDuplicateUsername(username);
                             break usernameExit;
                         } catch (InvalidUserException e) {
                             System.out.println(e.getMessage());
@@ -167,12 +141,12 @@ public class LoginMenu extends PageServices implements MenuIF {
                 {
                     while (true) {
                         try {
-                            System.out.println("\nPlease create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters): ");
+                            System.out.println("Please create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters");
                             password = scan.nextLine();
 
                             userService.isValidPassword(password);
 
-                            System.out.println("\nReenter your new password: ");
+                            System.out.println("Reenter your new password: ");
                             password2 = scan.nextLine();
 
                             userService.isSamePassword(password2, password);
@@ -185,44 +159,30 @@ public class LoginMenu extends PageServices implements MenuIF {
                 emailExit:
                 {
                     while (true) {
-                        System.out.println("\nPlease enter your email: ");
+                        System.out.println("Please enter your email");
                         email = scan.nextLine();
 
                         try {
                             userService.isValidEmail(email);
-                            userService.isDuplicateEmail(email);
                             break emailExit;
                         } catch (InvalidUserException e) {
                             System.out.println(e.getMessage());
                         }
                     }
                 }
-                hometownExit:
-                {
-                    while (true) {
-                        System.out.println("\nPlease enter your hometown: ");
-                        hometown = scan.nextLine();
-
-                        try {
-                            userService.isValidKantoTown(hometown);
-                            break hometownExit;
-                        } catch (InvalidUserException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
-                }
-                System.out.println("\nPlease review the following information: ");
-                System.out.println("\nYou are " + title + " " + fname);
-                System.out.println("Username: " + username + "\nPassword: " + password + "\nEmail: " + email + "\nAnd you are from " + hometown);
-                System.out.println("\nIs this correct? (y/n):");
+                System.out.println("Please review the following information: ");
+                System.out.println("You are " + fname);
+                System.out.println("Username: " + username + "\nPassword: " + password + "\nEmail" + email);
+                System.out.println("Is this correct? (y/n):");
 
                 switch (scan.nextLine().toLowerCase()) {
                     case "y":
-                        customer = new Customer(UUID.randomUUID().toString(), title, fname, username, password, email, hometown);
-                        return customer;
+                        manager = new Manager(UUID.randomUUID().toString(), fname, username, password, email);
+                        return manager;
                     case "n":
-                        customer = new Customer(UUID.randomUUID().toString(), title, fname, username, password, email, hometown);
-                        return updateInfo(customer);
+                        manager = new Manager(UUID.randomUUID().toString(), fname, username, password, email);
+                        System.out.println("\nPlease try signing up again");
+                        return updateInfo(manager);
                     default:
                         System.out.println("\nResponse not recognized");
                 }
@@ -230,20 +190,19 @@ public class LoginMenu extends PageServices implements MenuIF {
         }
     }
 
-    private Customer updateInfo(Customer customer) {
+    private Manager updateInfo(Manager manager) {
         Scanner scan = new Scanner(System.in);
 
         exit:
         {
             while (true) {
                 System.out.println("What would you like to change? ");
-                System.out.println("1. Title: " + customer.getTitle() +
-                        "\n2. Name: " + customer.getFname() +
-                        "\n3. Username: " + customer.getUsername() +
-                        "\n4. Password: " + customer.getPassword() +
-                        "\n5. Email: " + customer.getEmail() +
-                        "\n6. Hometown: " + customer.getHometown() +
-                        "\nx. Go back");
+                System.out.println(
+                        "\n1. Name: " + manager.getFname() +
+                                "\n2. Username: " + manager.getUsername() +
+                                "\n3. Password: " + manager.getPassword() +
+                                "\n4. Email: " + manager.getEmail() +
+                                "\nx. Go back");
                 String input = scan.nextLine();
 
                 choiceExit:
@@ -252,12 +211,12 @@ public class LoginMenu extends PageServices implements MenuIF {
                         switch (input) {
                             case "1":
                                 while (true) {
-                                    System.out.println("\nPlease enter your title: ");
-                                    String title = scan.nextLine();
+                                    System.out.println("\nPlease enter your name: ");
+                                    String fname = scan.nextLine();
 
                                     try {
-                                        userService.isValidTitle(title);
-                                        customer.setTitle(title);
+                                        userService.isValidName(fname);
+                                        manager.setFname(fname);
                                         break choiceExit;
                                     } catch (InvalidUserException e) {
                                         System.out.println(e.getMessage());
@@ -265,32 +224,19 @@ public class LoginMenu extends PageServices implements MenuIF {
                                 }
                             case "2":
                                 while (true) {
-                                    System.out.println("\nPlease enter your name: ");
-                                    String fname = scan.nextLine();
-
-                                    try {
-                                        userService.isValidName(fname);
-                                        customer.setFname(fname);
-                                        break choiceExit;
-                                    } catch (InvalidUserException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                }
-                            case "3":
-                                while (true) {
                                     System.out.println("\nPlease create a username (3-15 characters): ");
                                     String username = scan.nextLine();
 
                                     try {
                                         userService.isValidUsername(username);
                                         userService.isDuplicateUsername(username);
-                                        customer.setUsername(username);
+                                        manager.setUsername(username);
                                         break choiceExit;
                                     } catch (InvalidUserException e) {
                                         System.out.println(e.getMessage());
                                     }
                                 }
-                            case "4":
+                            case "3":
                                 while (true) {
                                     try {
                                         System.out.println("\nPlease create a password (Must contain: 1 uppercase letter, 1 lowercase letter, 1 number, one special character, 8-20 characters): ");
@@ -303,13 +249,13 @@ public class LoginMenu extends PageServices implements MenuIF {
 
                                         userService.isSamePassword(password2, password);
 
-                                        customer.setUsername(password);
+                                        manager.setUsername(password);
                                         break choiceExit;
                                     } catch (InvalidUserException e) {
                                         System.out.println(e.getMessage());
                                     }
                                 }
-                            case "5":
+                            case "4":
                                 while (true) {
                                     System.out.println("\nPlease enter your email: ");
                                     String email = scan.nextLine();
@@ -318,21 +264,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                                         userService.isValidEmail(email);
                                         userService.isDuplicateEmail(email);
 
-                                        customer.setEmail(email);
-                                        break choiceExit;
-                                    } catch (InvalidUserException e) {
-                                        System.out.println(e.getMessage());
-                                    }
-                                }
-                            case "6":
-                                while (true) {
-                                    System.out.println("\nPlease enter your hometown: ");
-                                    String hometown = scan.nextLine();
-
-                                    try {
-                                        userService.isValidKantoTown(hometown);
-
-                                        customer.setHometown(hometown);
+                                        manager.setEmail(email);
                                         break choiceExit;
                                     } catch (InvalidUserException e) {
                                         System.out.println(e.getMessage());
@@ -348,6 +280,6 @@ public class LoginMenu extends PageServices implements MenuIF {
                 }
             }
         }
-        return customer;
+        return manager;
     }
 }

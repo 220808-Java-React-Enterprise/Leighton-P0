@@ -70,12 +70,18 @@ public class UserService {
     }
 
     public boolean isDuplicateEmail(String email) {
-        if (userDAO.getUsername(email) != null) throw new InvalidUserException("\nUsername not available!");
+        if (userDAO.getEmail(email) != null) throw new InvalidUserException("\nEmail not available!");
         return true;
     }
 
     public boolean isValidStreetAddress(String address) {
         if (!address.matches("\\w+(\\s\\w+){2,}")) throw new InvalidUserException("\nStreet address not recognized");
         return true;
+    }
+
+    public boolean isValidAdmin(String username, String password) {
+        if (userDAO.getAdmin(username,password) == null) throw new InvalidUserException("\nUser not recognized as admin");
+            return true;
+
     }
 }
