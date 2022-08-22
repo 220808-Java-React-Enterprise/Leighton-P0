@@ -73,7 +73,7 @@ public class OrderDAO implements CrudDAO<Order>{
     public List<Order> getPreviousOrders(boolean b, String uid) {
         List<Order> orders = new ArrayList<>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE order_complete = ? AND user_id = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE order_complete = ? AND user_id = ? ORDER BY order_date DESC");
             ps.setBoolean(1, b);
             ps.setString(2, uid);
             ResultSet rs = ps.executeQuery();

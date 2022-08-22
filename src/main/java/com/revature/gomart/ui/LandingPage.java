@@ -1,5 +1,6 @@
 package com.revature.gomart.ui;
 
+import com.revature.gomart.daos.*;
 import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import dnl.utils.text.table.TextTable;
@@ -53,6 +54,7 @@ public class LandingPage extends PageServices implements MenuIF {
                                 break exit;
                             case "7":
                                 System.out.println("We hope to see you again");
+                                new LoginMenu(new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO()), new AddressService(new AddressDAO())).start();
                                 break exit;
                             default:
                                 System.out.println("Input not recognized.");

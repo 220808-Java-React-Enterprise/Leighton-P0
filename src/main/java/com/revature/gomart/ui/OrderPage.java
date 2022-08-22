@@ -26,28 +26,42 @@ public class OrderPage extends PageServices implements MenuIF{
                 Order currentOrder = orderService.retrieve(false, user.getId());
                 List<OrderProduct> products = opService.getOrderProducts((currentOrder.getId()));
 
-                System.out.println("Your cart: \n");
-                TextTable table = generateOrder(products, currentOrder);
-                table.setAddRowNumbering(false);
+                if (products.size() != 0) {
+                    System.out.println("Your cart: \n");
+                    TextTable table = generateOrder(products, currentOrder);
+                    table.setAddRowNumbering(false);
 
-                table.printTable();
-                System.out.println("\nTotal cost: " + orderService.getCost(currentOrder) + "\n");
-                System.out.println("\nWhat would you like to do? \n1. Check out \n2. View Profile \n3. Back to store page");
+                    table.printTable();
+                    System.out.println("\nTotal cost: " + orderService.getCost(currentOrder) + "\n");
+                    System.out.println("\nWhat would you like to do? \n1. Check out \n2. View Profile \n3. Back to store page");
 
-                switch (scan.nextLine()) {
-                    case "1":
-                        new CheckoutPage(user, userService, productService, orderService, opService, addressService).start();
-                        break exit;
-                    case "2":
-                        new UserProfile(user, userService, productService, orderService, opService, addressService).start();
-                        break exit;
-                    case "3":
-                        new LandingPage(user, userService, productService, orderService, opService, addressService).start();
-                        break exit;
-                    default:
-                        System.out.println("Input not recognized");
+                    switch (scan.nextLine()) {
+                        case "1":
+                            new CheckoutPage(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        case "2":
+                            new UserProfile(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        case "3":
+                            new LandingPage(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        default:
+                            System.out.println("Input not recognized");
+                    }
+                } else {
+                    System.out.println("\nYour cart is empty!");
+                    System.out.println("\nWhat would you like to do? \n1. View Profile \n2. Back to store page");
+                    switch (scan.nextLine()) {
+                        case "1":
+                            new UserProfile(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        case "2":
+                            new LandingPage(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        default:
+                            System.out.println("Input not recognized");
+                    }
                 }
-
             }
         }
     }
@@ -56,6 +70,7 @@ public class OrderPage extends PageServices implements MenuIF{
         String[] tableHeaders = {"Item", "No.  ","Price "};
         Object[][] tableData = new Object[products.size()][3];
 
+        int total_cost = 0;
 
         for (int i = 0; i < products.size(); i++) {
             String productName = products.get(i).getProduct_name();
@@ -71,9 +86,10 @@ public class OrderPage extends PageServices implements MenuIF{
                     tableData[i][j] = (productQuantity * productPrice) + "  ";
                 }
             }
-            orderService.updateCost(order, (productQuantity * productPrice));
+            total_cost += (productQuantity * productPrice);
         }
 
+        orderService.updateCost(order, total_cost);
         TextTable table = new TextTable(tableHeaders, tableData);
         table.setAddRowNumbering(false);
 

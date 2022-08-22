@@ -4,6 +4,7 @@ import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import com.revature.gomart.utils.custom_exceptions.InvalidUserException;
 import dnl.utils.text.table.TextTable;
+import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.List;
 import java.util.Scanner;
@@ -27,20 +28,64 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
             while (true) {
                 if (pastOrders.size() == 0) {
                     System.out.println("You have no past orders \n \n1. Return to your profile \n2. Return to the store page");
-                    String userChoice = scan.nextLine();
-                        switch (userChoice) {
-                            case "1":
-                                new UserProfile(user, userService, productService, orderService, opService, addressService).start();
-                                break exit;
-                            case "2":
-                                new LandingPage(user, userService, productService, orderService, opService, addressService).start();
-                                break exit;
+                    String input = scan.nextLine();
+                    switch (input) {
+                        case "1":
+                            new UserProfile(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        case "2":
+                            new LandingPage(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
                     }
                 } else {
                     TextTable table = printPastOrder(pastOrders);
                     table.printTable();
                     System.out.println("\nWhat would you like to do?");
                     System.out.println("\n1. Get order details \n2. Back to my Profile \n3. Back to the store page");
+                    switch (scan.nextLine()) {
+                        case "1": {
+                            while (true) {
+                                System.out.println("\nSelect the order you would like to view:");
+                                String choice = scan.nextLine();
+                                if (NumberUtils.isNumber(choice)) {
+                                    int orderChoice = Integer.parseInt(choice);
+                                    if (orderChoice <= pastOrders.size()) {
+                                        Order order = pastOrders.get(orderChoice - 1);
+                                        List<OrderProduct> products = opService.getOrderProducts(order.getId());
+
+                                        TextTable orderTable = new OrderPage(user, userService, productService, orderService, opService, addressService).generateOrder(products, order);
+                                        orderTable.printTable();
+                                        System.out.println("\nWhat would you like to do? \n\n1. Back to order history \n2. Back to my profile \n3. Back to store page");
+                                        switch(scan.nextLine()) {
+                                            case "1":
+                                                new OrderHistoryPage(user, userService, productService, orderService, opService, addressService).start();
+                                                break exit;
+                                            case "2":
+                                                new UserProfile(user, userService, productService, orderService, opService, addressService).start();
+                                                break exit;
+                                            case "3":
+                                                new LandingPage(user, userService, productService, orderService, opService, addressService).start();
+                                                break exit;
+                                            default:
+                                                System.out.println("Input not recognized.");
+                                        }
+                                    } else {
+                                        System.out.println("Order not found");
+                                    }
+                                } else {
+                                    System.out.println("Input not recognized");
+                                }
+                            }
+                        }
+                        case "2":
+                            new UserProfile(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        case "3":
+                            new LandingPage(user, userService, productService, orderService, opService, addressService).start();
+                            break exit;
+                        default:
+                            System.out.println("Input not recognized.");
+                    }
                 }
             }
         }
