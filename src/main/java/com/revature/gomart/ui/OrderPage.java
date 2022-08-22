@@ -29,6 +29,7 @@ public class OrderPage extends PageServices implements MenuIF{
                 if (products.size() != 0) {
                     System.out.println("Your cart: \n");
                     TextTable table = generateOrder(products, currentOrder);
+                    currentOrder = orderService.retrieve(false, user.getId());
                     table.setAddRowNumbering(false);
 
                     table.printTable();
@@ -76,6 +77,7 @@ public class OrderPage extends PageServices implements MenuIF{
             String productName = products.get(i).getProduct_name();
             int productQuantity = products.get(i).getProduct_quantity();
             int productPrice = products.get(i).getProduct_price();
+            int productTot = productQuantity * productPrice;
 
             for (int j = 0; j < 3; j++) {
                 if (j == 0) {
@@ -83,10 +85,10 @@ public class OrderPage extends PageServices implements MenuIF{
                 } if (j == 1) {
                     tableData[i][j] = productQuantity + "  ";
                 } if (j == 2) {
-                    tableData[i][j] = (productQuantity * productPrice) + "  ";
+                    tableData[i][j] = productPrice + "  ";
                 }
             }
-            total_cost += (productQuantity * productPrice);
+            total_cost += productTot;
         }
 
         orderService.updateCost(order, total_cost);

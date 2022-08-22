@@ -27,7 +27,7 @@ public class UserProfile extends PageServices implements MenuIF{
                 System.out.println("Title: " + current.getTitle() +
                         "\nName: " + current.getFname() +
                         "\nUsername: " + current.getUsername() +
-                        "\nPassword: " + current.getPassword() +
+//                        "\nPassword: " + current.getPassword() +
                         "\nEmail: " + current.getEmail() +
                         "\nHometown: " + current.getHometown() + "\n");
                 System.out.println("\nWhat would you like to do? \n1. View cart \n2. View past orders \n3. View address book \n4. Edit info \nx. Go back to main menu \n");

@@ -24,10 +24,10 @@ public class LandingPage extends PageServices implements MenuIF {
         exit:
         {
             while (true) {
-                System.out.println("\nWelcome back, " + user.getTitle() + " " + user.getFname() + "\nWe're still getting things set up, please be patient as we prepare a great experience for you!");
+                System.out.println("\nWelcome back, " + user.getTitle() + " " + user.getFname() + "\n");
 
                 System.out.println("What would you like to do?: ");
-                System.out.println("1. View potions         2. View medicines \n3. View Pokeballs       4. View field items \n5. View cart            6. View profile \n7. Sign out");
+                System.out.println("1. View potions         2. View medicines \n3. View Pokeballs       4. View field items \n5. View cart            6. View profile \n7. Sign out             8. Exit the Pokemart");
 
                 String productChoice = scan.nextLine();
                 choiceExit:
@@ -53,8 +53,11 @@ public class LandingPage extends PageServices implements MenuIF {
                                 new UserProfile(user, userService, productService, orderService, opService, addressService).start();
                                 break exit;
                             case "7":
-                                System.out.println("We hope to see you again");
+                                System.out.println("\nThank you for shopping with us!");
                                 new LoginMenu(new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO()), new AddressService(new AddressDAO())).start();
+                                break exit;
+                            case "8":
+                                System.out.println("\nThank you for shopping with us! \nWe hope to see you again!");
                                 break exit;
                             default:
                                 System.out.println("Input not recognized.");
