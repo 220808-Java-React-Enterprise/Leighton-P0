@@ -4,7 +4,6 @@ import com.revature.gomart.models.Order;
 import com.revature.gomart.utils.custom_exceptions.InvalidSQLException;
 import com.revature.gomart.utils.database.ConnectionFactory;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,11 +43,56 @@ public class OrderDAO implements CrudDAO<Order>{
     }
 
     @Override
-    public Order getById(String id) {return null;}
+    public Order getById(String id) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE id = ?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                return new Order(
+                        rs.getString("id"),
+                        rs.getInt("price"),
+                        rs.getDate("order_date").toLocalDate(),
+                        rs.getString("delivery_type"),
+                        rs.getDate("delivery_date").toLocalDate(),
+                        rs.getBoolean("order_complete"),
+                        rs.getString("user_id")
+                );
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return null;
+    }
 
     @Override
-    public List getAll() {
-        return null;
+    public List<Order> getAll() {
+        List<Order> orders = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE order_complete = ?");
+            ps.setBoolean(1,true);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getString("id"),
+                        rs.getInt("price"),
+                        rs.getDate("order_date").toLocalDate(),
+                        rs.getString("delivery_type"),
+                        rs.getDate("delivery_date").toLocalDate(),
+                        rs.getBoolean("order_complete"),
+                        rs.getString("user_id")
+                );
+                orders.add(o);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return orders;
     }
 
     public Order getExistingOrder(boolean b, String uid) {
@@ -238,6 +282,65 @@ public class OrderDAO implements CrudDAO<Order>{
         }
 
         return orders;
+    }
+
+    public List<Order> adminGetByUserId(String uid) {
+        List<Order> orders = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE user_id = ? and order_complete = ?");
+            ps.setString(1, uid);
+            ps.setBoolean(2, true);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getString("id"),
+                        rs.getInt("price"),
+                        rs.getDate("order_date").toLocalDate(),
+                        rs.getString("delivery_type"),
+                        rs.getDate("delivery_date").toLocalDate(),
+                        rs.getBoolean("order_complete"),
+                        rs.getString("user_id")
+                );
+                orders.add(o);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return orders;
+    }
+
+    public String getUserIdById(String id) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT user_id FROM orders WHERE id = ?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("user_id");
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return null;
+    }
+
+    public LocalDate getOrderDateIdById(String id) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT order_date FROM orders WHERE id = ?");
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getDate("order_date").toLocalDate();
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return null;
     }
 
 }

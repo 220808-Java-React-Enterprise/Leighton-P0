@@ -1,4 +1,4 @@
-package com.revature.gomart.models;
+package com.revature.gomart.ui;
 
 import com.revature.gomart.services.*;
 

@@ -1,11 +1,8 @@
 package com.revature.gomart.ui;
-import com.revature.gomart.daos.*;
 import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
-import com.revature.gomart.utils.custom_exceptions.*;
 import dnl.utils.text.table.TextTable;
 
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 

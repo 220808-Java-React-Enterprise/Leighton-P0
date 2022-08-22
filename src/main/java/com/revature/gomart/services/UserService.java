@@ -10,9 +10,13 @@ public class UserService {
 
     private final UserDAO userDAO;
 
-    public UserService(UserDAO userDAO) {this.userDAO = userDAO;}
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
-    public void register(User user) {userDAO.save(user);}
+    public void register(User user) {
+        userDAO.save(user);
+    }
 
     public User login(String username, String password) {
         User user = userDAO.getByUsernameAndPassword(username, password);
@@ -26,30 +30,48 @@ public class UserService {
         return user;
     }
 
-    public void updateUser(User user) {userDAO.update(user);}
+    public User findByUsername(String name) {
+        return userDAO.getByUsername(name);
+    }
+
+    public void updateUser(User user) {
+        userDAO.update(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userDAO.getAll();
+    }
+
+    public String findUsernameById(String uid) {return userDAO.getUsernameById(uid);}
 
     public boolean isValidUsername(String username) {
-        if (!username.matches("^[a-zA-Z0-9_-]{3,15}$")) throw new InvalidUserException("\nUsername must be between 3-15 characters and may only contain letters, numbers, dashes, and hyphens");
+        if (!username.matches("^[a-zA-Z0-9_-]{3,15}$"))
+            throw new InvalidUserException("\nUsername must be between 3-15 characters and may only contain letters, numbers, dashes, and hyphens");
         return true;
     }
 
     public boolean isValidTitle(String title) {
-        if (!title.matches("^(\\s)*[A-Za-z]{0,30}((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*(\\s)*$")) throw new InvalidUserException("\nPlease enter a valid title (up to 30 characters)");
+        if (!title.matches("^(\\s)*[A-Za-z]{0,30}((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*(\\s)*$"))
+            throw new InvalidUserException("\nPlease enter a valid title (up to 30 characters)");
         return true;
     }
+
     public boolean isValidName(String name) {
-        if (!name.matches("^(\\s)*[A-Za-z]{1,20}((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*(\\s)*$")) throw new InvalidUserException("\nPlease enter your name (max 20 characters)");
+        if (!name.matches("^(\\s)*[A-Za-z]{1,20}((\\s)?((\\'|\\-|\\.)?([A-Za-z])+))*(\\s)*$"))
+            throw new InvalidUserException("\nPlease enter your name (max 20 characters)");
         return true;
     }
 
     // Chris email regex [A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}
     public boolean isValidEmail(String email) {
-        if (!email.matches("[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")) throw new InvalidUserException("\nPlease enter a valid email address");
+        if (!email.matches("[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"))
+            throw new InvalidUserException("\nPlease enter a valid email address");
         return true;
     }
 
     public boolean isValidPassword(String password) {
-        if (!password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,20}$")) throw new InvalidUserException("/Password must be 8-20 characters with at least one uppercase letter, one lowercase letter, one number, and one special character");
+        if (!password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,20}$"))
+            throw new InvalidUserException("/Password must be 8-20 characters with at least one uppercase letter, one lowercase letter, one number, and one special character");
         return true;
     }
 
@@ -80,8 +102,9 @@ public class UserService {
     }
 
     public boolean isValidAdmin(String username, String password) {
-        if (userDAO.getAdmin(username,password) == null) throw new InvalidUserException("\nUser not recognized as admin");
-            return true;
+        if (userDAO.getAdmin(username, password) == null)
+            throw new InvalidUserException("\nUser not recognized as admin");
+        return true;
 
     }
 }

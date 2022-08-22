@@ -2,7 +2,6 @@ package com.revature.gomart.ui;
 
 import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
-import com.revature.gomart.utils.custom_exceptions.InvalidUserException;
 import dnl.utils.text.table.TextTable;
 import org.apache.commons.lang.math.NumberUtils;
 

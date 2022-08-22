@@ -4,6 +4,7 @@ import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import com.revature.gomart.ui.LoginMenu;
 import com.revature.gomart.ui.MenuIF;
+import com.revature.gomart.ui.PageServices;
 import com.revature.gomart.utils.custom_exceptions.*;
 
 import java.util.Scanner;
@@ -24,9 +25,9 @@ public class AdminLogin extends PageServices implements MenuIF {
             while (true) {
                 System.out.println("\nManager menu");
                 System.out.println("Press one of the following keys to continue:");
-                System.out.println("[1] Login to an existing manager account");
-                System.out.println("[2] Register as a new manager");
-                System.out.println("[3] Exit the Pokemart");
+                System.out.println("1. Login to an existing manager account");
+                System.out.println("2. Register as a new manager");
+                System.out.println("3. Exit the Pokemart");
 
                 System.out.println("\nEnter:");
 
@@ -67,6 +68,7 @@ public class AdminLogin extends PageServices implements MenuIF {
                     User manager = userService.login(username, password);
                     userService.isValidAdmin(username, password);
                     new AdminMenu(manager, userService, productService, orderService, opService, addressService).start();
+                    break exit;
 
                 } catch (InvalidUserException e) {
                     System.out.println(e.getMessage());

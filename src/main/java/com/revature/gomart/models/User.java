@@ -1,6 +1,6 @@
 package com.revature.gomart.models;
 
-public abstract class User {
+public class User {
     protected String id;
     protected String title;
     protected String fname;
@@ -9,6 +9,18 @@ public abstract class User {
     protected String email;
     protected String hometown;
     protected Boolean admin;
+
+    public User() {}
+    public User(String id, String title, String fname, String username, String password, String email, String hometown, Boolean admin) {
+        this.id = id;
+        this.title = title;
+        this.fname = fname;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.hometown = hometown;
+        this.admin = admin;
+    }
 
     public String getId() {
         return id;

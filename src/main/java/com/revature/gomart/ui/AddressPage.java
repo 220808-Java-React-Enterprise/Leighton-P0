@@ -4,7 +4,6 @@ import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import com.revature.gomart.utils.custom_exceptions.*;
 
-import java.sql.SQLOutput;
 import java.util.Scanner;
 import java.util.UUID;
 

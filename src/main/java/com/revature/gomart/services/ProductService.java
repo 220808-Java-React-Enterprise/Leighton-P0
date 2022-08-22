@@ -26,5 +26,13 @@ public class ProductService {
 
     public void reduceProductStock (Product p, int q) {productDAO.reduceProductStock(p, q);}
 
+    public List<Product> getByWarehouseId(String whid) {
+        return productDAO.getByWarehouseId(whid);
+    }
+
+    public List<String> getIdByWarehouseId(String whid){return productDAO.getIdByWarehouseId(whid);}
+
+    public void restockItems(String pid) {productDAO.restockById(pid);}
+
 
 }

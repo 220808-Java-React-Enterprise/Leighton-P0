@@ -63,37 +63,47 @@ public class UserDAO implements CrudDAO<User> {
 
     @Override
     public User getById(String id) {
-        Customer cust = new Customer();
+        User user = new User();
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE id = ?");
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                cust.setId(rs.getString("id"));
-                cust.setUsername(rs.getString("username"));
-                cust.setTitle(rs.getString("title"));
-                cust.setFname(rs.getString("fname"));
-                cust.setPassword(rs.getString("password"));
-                cust.setEmail(rs.getString("email"));
-                cust.setHometown(rs.getString("hometown"));
+                user.setId(rs.getString("id"));
+                user.setUsername(rs.getString("username"));
+                user.setTitle(rs.getString("title"));
+                user.setFname(rs.getString("fname"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setHometown(rs.getString("hometown"));
             }
         } catch (SQLException e) {
             throw new InvalidSQLException("Error connecting to database");
         }
-        return cust;
+        return user;
     }
 
     @Override
     public List<User> getAll() {
         List<User> allUsers = new ArrayList<>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM users");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM users ORDER BY admin DESC");
 
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next())
-                allUsers.add(new Customer(rs.getString("fname")));
+            while (rs.next()) {
+                User u = new User();
+                u.setId(rs.getString("id"));
+                u.setTitle(rs.getString("title"));
+                u.setFname(rs.getString("fname"));
+                u.setUsername(rs.getString("username"));
+                u.setPassword(rs.getString("password"));
+                u.setEmail(rs.getString("email"));
+                u.setHometown(rs.getString("hometown"));
+                u.setAdmin(rs.getBoolean("admin"));
+                allUsers.add(u);
+            }
         } catch (SQLException e) {
             throw new InvalidSQLException("Error connecting to database");
         }
@@ -104,6 +114,19 @@ public class UserDAO implements CrudDAO<User> {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT (username) FROM users WHERE username = ?");
             ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) return rs.getString("username");
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+        return null;
+    }
+
+    public String getUsernameById(String uid) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT (username) FROM users WHERE id = ?");
+            ps.setString(1, uid);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) return rs.getString("username");
@@ -152,6 +175,21 @@ public class UserDAO implements CrudDAO<User> {
 
             if (rs.next())
                 return new Customer(rs.getString("id"), rs.getString("title"), rs.getString("fname"), rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("hometown"));
+        } catch (SQLException e) {
+            throw new InvalidSQLException("An error occurred when trying to save to the database.");
+        }
+
+        return null;
+    }
+
+    public User getByUsername(String name) {
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM users WHERE username = ?");
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+                return new User(rs.getString("id"), rs.getString("title"), rs.getString("fname"), rs.getString("username"), rs.getString("password"), rs.getString("email"), rs.getString("hometown"), rs.getBoolean("admin"));
         } catch (SQLException e) {
             throw new InvalidSQLException("An error occurred when trying to save to the database.");
         }

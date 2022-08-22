@@ -35,7 +35,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                         break exit;
                     case "2":
                         Customer customer = signup();
-                        Order order = new Order(UUID.randomUUID().toString(), customer.getId());
+                        Order order = new Order(customer.getId());
                         userService.register(customer);
                         orderService.createNew(order);
                         new LandingPage(customer, userService, productService, orderService, opService, addressService).start();
@@ -45,6 +45,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                         break exit;
                     case "+":
                         new AdminLogin(userService, productService, orderService, opService, addressService).start();
+                        break exit;
                     default:
                         System.out.println("\nSorry, I didn't catch that\nPlease select either 1, 2, or 3");
                 }
@@ -74,7 +75,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                     Order order = orderService.retrieve(false, user.getId());
                     if (order == null) {
                         System.out.println("Creating a cart for you");
-                        Order o = new Order(UUID.randomUUID().toString(), user.getId());
+                        Order o = new Order(user.getId());
                         orderService.createNew(o);
                     }
 

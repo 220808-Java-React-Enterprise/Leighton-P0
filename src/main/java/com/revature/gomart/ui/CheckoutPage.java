@@ -77,7 +77,7 @@ public class CheckoutPage extends PageServices implements MenuIF {
                 currentOrder.setTot_price(generateCost(products));
                 table.printTable();
                 System.out.println("\nOrder total: " + currentOrder.getTot_price());
-                if (currentOrder.getDeliveryType() != "Pick up in store") {
+                if (!currentOrder.getDeliveryType().equals("Pick up in store")) {
                     System.out.println("Delivery date: " + currentOrder.getDeliveryDate());
                 } else {
                     System.out.println("You will receive an email at " + user.getEmail() + " when your order is ready for pickup");
@@ -90,7 +90,6 @@ public class CheckoutPage extends PageServices implements MenuIF {
                         orderService.updateOrderStatus(currentOrder);
                         System.out.println("\nThank you for your purchase! \nTo see your order details, check your order history in your profile.");
                         orderService.createNew(new Order(
-                                UUID.randomUUID().toString(),
                                 false,
                                 user.getId()
                         ));

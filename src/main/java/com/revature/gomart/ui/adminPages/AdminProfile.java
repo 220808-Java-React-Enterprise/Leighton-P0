@@ -1,9 +1,9 @@
 package com.revature.gomart.ui.adminPages;
 
-import com.revature.gomart.daos.*;
 import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import com.revature.gomart.ui.MenuIF;
+import com.revature.gomart.ui.PageServices;
 
 public class AdminProfile extends PageServices implements MenuIF {
 
@@ -16,6 +16,6 @@ public class AdminProfile extends PageServices implements MenuIF {
 
     @Override
     public void start() {
-
+        System.out.println("We're working on it!");
     }
 }

@@ -1,6 +1,7 @@
 package com.revature.gomart.models;
 
 import java.time.*;
+import java.util.Random;
 
 public class Order {
     private String id;
@@ -13,7 +14,7 @@ public class Order {
     private String user_id;
 
     public Order(String id, int tot_price, LocalDate orderDate, String deliveryType, LocalDate deliveryDate, boolean orderComplete, String user_id) {
-        this.id = id;
+        this.id = generateId();
         this.tot_price = tot_price;
         this.orderDate = orderDate;
         this.deliveryType = deliveryType;
@@ -23,23 +24,42 @@ public class Order {
     }
 
     public Order(String user_id) {
-
-    }
-
-    public Order(String id, String user_id) {
-        this.id = id;
+        this.id = generateId();
         this.user_id = user_id;
         this.orderComplete = false;
     }
 
     public Order(boolean orderComplete, String user_id) {
+        this.id = generateId();
         this.orderComplete = orderComplete;
         this.user_id = user_id;
     }
+
     public Order(String id, boolean orderComplete, String user_id) {
         this.id = id;
         this.orderComplete = orderComplete;
         this.user_id = user_id;
+    }
+
+    private String generateId() {
+        final String lowers = "abcdefghijklmnopqrstuvwxyz";
+        final String uppers = lowers.toUpperCase();
+        final String nums = "1234567890";
+        final String letsnums = lowers + uppers + nums;
+        char[] charset = letsnums.toCharArray();
+        char[] result = new char[10];
+
+        Random random = new Random();
+
+        for (int i = 0; i < result.length; i++) {
+            int r = random.nextInt(charset.length);
+            result[i] = charset[r];
+        }
+        StringBuilder sb = new StringBuilder();
+        for (char c : result) {
+            sb.append(c);
+        }
+        return sb.toString();
     }
 
     public String getId() {

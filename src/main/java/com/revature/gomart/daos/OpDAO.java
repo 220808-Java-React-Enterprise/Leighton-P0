@@ -93,6 +93,30 @@ public class OpDAO implements CrudDAO<OrderProduct>{
         return ops;
     }
 
+    public List<OrderProduct> getByProductId(String productId) {
+        List<OrderProduct> ops = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM order_products WHERE product_id = ?");
+            ps.setString(1, productId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                OrderProduct p = new OrderProduct(
+                        rs.getString("id"),
+                        rs.getString("product_name"),
+                        rs.getInt("product_price"),
+                        rs.getInt("product_quantity"),
+                        rs.getString("order_id"),
+                        rs.getString("product_id")
+                );
+                ops.add(p);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+        return ops;
+    }
+
     public OrderProduct getByOrderAndProductIds(Order order, Product product) {
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM order_products WHERE order_id = ? AND product_id = ?");

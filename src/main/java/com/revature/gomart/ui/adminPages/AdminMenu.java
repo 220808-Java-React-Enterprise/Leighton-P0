@@ -1,14 +1,15 @@
 package com.revature.gomart.ui.adminPages;
 
 import com.revature.gomart.daos.*;
-import com.revature.gomart.models.PageServices;
-import com.revature.gomart.models.User;
+import com.revature.gomart.ui.PageServices;
+import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import com.revature.gomart.ui.LoginMenu;
 import com.revature.gomart.ui.MenuIF;
 import com.revature.gomart.ui.OrderPage;
-import com.revature.gomart.ui.UserProfile;
+import dnl.utils.text.table.TextTable;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class AdminMenu extends PageServices implements MenuIF {
@@ -28,33 +29,37 @@ public class AdminMenu extends PageServices implements MenuIF {
         exit:
         {
             while (true) {
-                System.out.println("Welcome in, " + user.getFname());
+                System.out.println("\nWelcome in, " + user.getFname());
                 System.out.println("What would you like to do?: ");
                 System.out.println(
-                        "1. View warehouses        2. View customers " +
-                        "\n3. View all orders      4. View profile " +
-                        "\n5. Sign out             6. Exit the Pokemart");
+                          "1. View warehouses      2. View users " +
+                        "\n3. View all orders      4. Sign out " +
+                        "\n5. Exit the Pokemart");
 
                 String productChoice = scan.nextLine();
-                while (true) {
+                choiceExit:
+                {
                     switch (productChoice) {
                         case "1":
-                            new AdminWarehouseMenu(user, userService, productService, orderService, opService, addressService).start();
+                            new AdminWarehouseMenu(user, userService, productService, orderService, opService, addressService, new WarehouseService(new WarehouseDAO())).start();
                             break exit;
                         case "2":
                             new AdminUserViewMenu(user, userService, productService, orderService, opService, addressService).start();
                             break exit;
                         case "3":
-                            new OrderPage(user, userService, productService, orderService, opService, addressService).start();
-                            break exit;
+                            TextTable allOrders = getAllOrders();
+                            allOrders.printTable();
+                            System.out.println("\nPress any key to continue");
+                            scan.nextLine();
+                            break choiceExit;
+//                        case "4":
+//                            new AdminProfile(user, userService, productService, orderService, opService, addressService).start();
+//                            break exit;
                         case "4":
-                            new AdminProfile(user, userService, productService, orderService, opService, addressService).start();
-                            break exit;
-                        case "5":
                             System.out.println("\nThank you!");
                             new LoginMenu(new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO()), new AddressService(new AddressDAO())).start();
                             break exit;
-                        case "6":
+                        case "5":
                             System.out.println("\nThank you! \nWe hope to see you again!");
                             break exit;
                         default:
@@ -63,5 +68,32 @@ public class AdminMenu extends PageServices implements MenuIF {
                 }
             }
         }
+    }
+
+    public TextTable getAllOrders() {
+        List<Order> orders = orderService.getAll();
+        String[] tableHeaders = {"Order ID  ", "Order Date  ","Delivery type  ", "Delivery date  ", "User  "};
+        Object[][] tableData = new Object[orders.size()][5];
+
+        for (int i = 0; i < orders.size(); i++) {
+            for (int j = 0; j < 5; j++) {
+                if (j == 0) {
+                    tableData[i][j] = orders.get(i).getId() + "  ";
+                } if (j == 1) {
+                    tableData[i][j] = orders.get(i).getOrderDate() + "  ";
+                } if (j == 2) {
+                    tableData[i][j] = orders.get(i).getDeliveryType() + "  ";
+                } if (j == 3) {
+                    tableData[i][j] = orders.get(i).getDeliveryDate() + "  ";
+                } if (j == 4) {
+                    tableData[i][j] = userService.findUsernameById(orders.get(i).getUser_id()) + "  ";
+                }
+            }
+        }
+
+        TextTable table = new TextTable(tableHeaders, tableData);
+        table.setAddRowNumbering(false);
+
+        return table;
     }
 }

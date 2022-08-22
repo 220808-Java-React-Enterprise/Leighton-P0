@@ -14,15 +14,16 @@ public class OPService {
     public void saveToOP(Order o, Product p, int q) {opDAO.createNew(o, p, q);}
 
     public OrderProduct checkForProduct(Order o, Product p) {
-        OrderProduct op = opDAO.getByOrderAndProductIds(o, p);
-        return op;
+        return opDAO.getByOrderAndProductIds(o, p);
     }
 
     public void addToProduct(OrderProduct op, Product p, int q) {opDAO.addQuantity(op, p, q);}
 
     public List<OrderProduct> getOrderProducts(String id) {
-        List<OrderProduct> products = opDAO.getByOrderId(id);
+        return opDAO.getByOrderId(id);
+    }
 
-        return products;
+    public List<OrderProduct> getProductOrders(String id) {
+        return opDAO.getByProductId(id);
     }
 }
