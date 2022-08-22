@@ -30,7 +30,7 @@ public class UserProfile extends PageServices implements MenuIF{
                         "\nPassword: " + current.getPassword() +
                         "\nEmail: " + current.getEmail() +
                         "\nHometown: " + current.getHometown() + "\n");
-                System.out.println("\nWhat would you like to do? \n1. View Cart \n2. View past orders \n3. View address book \n4. Edit info \nx. Go back to main menu \n");
+                System.out.println("\nWhat would you like to do? \n1. View cart \n2. View past orders \n3. View address book \n4. Edit info \nx. Go back to main menu \n");
                 String userChoice = scan.nextLine();
 
                 choiceExit:

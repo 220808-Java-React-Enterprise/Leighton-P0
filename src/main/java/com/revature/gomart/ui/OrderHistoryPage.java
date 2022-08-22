@@ -21,12 +21,12 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
     @Override
     public void start() {
         Scanner scan = new Scanner(System.in);
-        List<Order> pastOrders = orderService.getPastOrdersDescending(user.getId());
+        List<Order> userOrders = orderService.getByUserId(user.getId());
 
         exit:
         {
             while (true) {
-                if (pastOrders.size() == 0) {
+                if (userOrders.size() <= 1) {
                     System.out.println("You have no past orders \n \n1. Return to your profile \n2. Return to the store page");
                     String input = scan.nextLine();
                     switch (input) {
@@ -38,11 +38,15 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
                             break exit;
                     }
                 } else {
+
+                    List<Order> pastOrders = determineListOrder(orderService.getPastOrdersDescending(user.getId()));
+
+
                     System.out.println(pastOrders.size());
                     TextTable table = printPastOrder(pastOrders);
                     table.printTable();
                     System.out.println("\nWhat would you like to do?");
-                    System.out.println("\n1. Get order details \n2. Back to my Profile \n3. Back to the store page");
+                    System.out.println("\n1. Get order details \n3. Back to my Profile \n4. Back to the store page");
                     switch (scan.nextLine()) {
                         case "1": {
                             while (true) {
@@ -88,6 +92,31 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
                             System.out.println("Input not recognized.");
                     }
                 }
+            }
+        }
+    }
+
+    public List<Order> determineListOrder(List<Order> pastOrders) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("\nHow would you like the table sorted?");
+        System.out.println("\n1. Date (newest to oldest) \n2. Date (oldest to newest) \n3. Price (highest to lowest) \n4. Price (lowest to highest) \n");
+        String userInput = scan.nextLine();
+        while (true) {
+            switch (userInput) {
+                case "1":
+                    pastOrders = orderService.getPastOrdersDescending(user.getId());
+                    return pastOrders;
+                case "2":
+                    pastOrders = orderService.getPastOrdersAscending(user.getId());
+                    return pastOrders;
+                case "3":
+                    pastOrders = orderService.getPastOrdersPriceDescending(user.getId());
+                    return pastOrders;
+                case "4":
+                    pastOrders = orderService.getPastOrdersPriceAscending(user.getId());
+                    return pastOrders;
+                default:
+                    System.out.println("Input not recognized");
             }
         }
     }

@@ -6,6 +6,7 @@ public class Product {
     private String category;
     private int price;
     private int stock;
+    private int maxStock;
     private String warehouse_id;
 
     public Product() {
@@ -65,6 +66,14 @@ public class Product {
         this.stock = stock;
     }
 
+    public int getMaxStock() {
+        return maxStock;
+    }
+
+    public void setMaxStock(int maxStock) {
+        this.maxStock = maxStock;
+    }
+
     public String getWarehouse_id() {
         return warehouse_id;
     }
@@ -79,8 +88,9 @@ public class Product {
                 "id='" + id + '\'' +
                 ", itemName='" + itemName + '\'' +
                 ", category='" + category + '\'' +
-                ", price=" + price +
-                ", stock=" + stock +
+                ", price=" + price + '\'' +
+                ", stock=" + stock + '\'' +
+                ", maxStock=" + maxStock + '\'' +
                 ", warehouse_id='" + warehouse_id + '\'' +
                 '}';
     }

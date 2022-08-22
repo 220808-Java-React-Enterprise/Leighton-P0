@@ -44,9 +44,7 @@ public class OrderDAO implements CrudDAO<Order>{
     }
 
     @Override
-    public Order getById(String id) {
-        return null;
-    }
+    public Order getById(String id) {return null;}
 
     @Override
     public List getAll() {
@@ -73,7 +71,7 @@ public class OrderDAO implements CrudDAO<Order>{
     public List<Order> getPreviousOrdersDescending(boolean b, String uid) {
         List<Order> orders = new ArrayList<>();
         try (Connection con = ConnectionFactory.getInstance().getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE (order_complete, user_id) = (?, ?) ORDER BY order_date ASC");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE (order_complete, user_id) = (?, ?) ORDER BY order_date DESC");
             ps.setBoolean(1, b);
             ps.setString(2, uid);
             ResultSet rs = ps.executeQuery();
@@ -87,6 +85,87 @@ public class OrderDAO implements CrudDAO<Order>{
                     rs.getDate("delivery_date").toLocalDate(),
                     rs.getBoolean("order_complete"),
                     rs.getString("user_id")
+                );
+                orders.add(o);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return orders;
+    }
+
+    public List<Order> getPreviousOrdersAscending(boolean b, String uid) {
+        List<Order> orders = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE (order_complete, user_id) = (?, ?) ORDER BY order_date ASC");
+            ps.setBoolean(1, b);
+            ps.setString(2, uid);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getString("id"),
+                        rs.getInt("price"),
+                        rs.getDate("order_date").toLocalDate(),
+                        rs.getString("delivery_type"),
+                        rs.getDate("delivery_date").toLocalDate(),
+                        rs.getBoolean("order_complete"),
+                        rs.getString("user_id")
+                );
+                orders.add(o);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return orders;
+    }
+
+    public List<Order> getPreviousOrdersPriceDescending(boolean b, String uid) {
+        List<Order> orders = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE (order_complete, user_id) = (?, ?) ORDER BY price DESC");
+            ps.setBoolean(1, b);
+            ps.setString(2, uid);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getString("id"),
+                        rs.getInt("price"),
+                        rs.getDate("order_date").toLocalDate(),
+                        rs.getString("delivery_type"),
+                        rs.getDate("delivery_date").toLocalDate(),
+                        rs.getBoolean("order_complete"),
+                        rs.getString("user_id")
+                );
+                orders.add(o);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return orders;
+    }
+
+    public List<Order> getPreviousOrdersPriceAscending(boolean b, String uid) {
+        List<Order> orders = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE (order_complete, user_id) = (?, ?) ORDER BY price ASC");
+            ps.setBoolean(1, b);
+            ps.setString(2, uid);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getString("id"),
+                        rs.getInt("price"),
+                        rs.getDate("order_date").toLocalDate(),
+                        rs.getString("delivery_type"),
+                        rs.getDate("delivery_date").toLocalDate(),
+                        rs.getBoolean("order_complete"),
+                        rs.getString("user_id")
                 );
                 orders.add(o);
             }
@@ -137,6 +216,28 @@ public class OrderDAO implements CrudDAO<Order>{
         } catch (SQLException e) {
             throw new InvalidSQLException("Error connecting to database");
         }
+    }
+
+    public List<Order> getByUserId(String uid) {
+        List<Order> orders = new ArrayList<>();
+        try (Connection con = ConnectionFactory.getInstance().getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM orders WHERE user_id = ?");
+            ps.setString(1, uid);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getString("id"),
+                        rs.getBoolean("order_complete"),
+                        rs.getString("user_id")
+                );
+                orders.add(o);
+            }
+        } catch (SQLException e) {
+            throw new InvalidSQLException("Error connecting to database");
+        }
+
+        return orders;
     }
 
 }

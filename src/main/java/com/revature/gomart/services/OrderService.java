@@ -14,6 +14,11 @@ public class OrderService {
 
     public void createNew(Order order) {orderDAO.save(order);}
 
+    public List<Order> getByUserId(String uid) {
+        List<Order> orders = orderDAO.getByUserId(uid);
+        return orders;
+    }
+
     public Order retrieve(boolean orderComplete, String userId) {
         Order order = orderDAO.getExistingOrder(orderComplete, userId);
         return order;
@@ -30,6 +35,21 @@ public class OrderService {
 
     public List<Order> getPastOrdersDescending(String uid){
         List<Order> orders = orderDAO.getPreviousOrdersDescending(true, uid);
+        return orders;
+    }
+
+    public List<Order> getPastOrdersAscending(String uid){
+        List<Order> orders = orderDAO.getPreviousOrdersAscending(true, uid);
+        return orders;
+    }
+
+    public List<Order> getPastOrdersPriceDescending(String uid){
+        List<Order> orders = orderDAO.getPreviousOrdersPriceDescending(true, uid);
+        return orders;
+    }
+
+    public List<Order> getPastOrdersPriceAscending(String uid){
+        List<Order> orders = orderDAO.getPreviousOrdersPriceAscending(true, uid);
         return orders;
     }
 
