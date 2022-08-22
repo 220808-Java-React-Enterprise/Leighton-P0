@@ -44,7 +44,7 @@ public class UserService {
 
     // Chris email regex [A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}
     public boolean isValidEmail(String email) {
-        if (!email.matches("^[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9]+)*$")) throw new InvalidUserException("\nPlease enter a valid email address");
+        if (!email.matches("[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")) throw new InvalidUserException("\nPlease enter a valid email address");
         return true;
     }
 
