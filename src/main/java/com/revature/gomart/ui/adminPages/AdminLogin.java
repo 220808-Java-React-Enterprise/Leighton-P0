@@ -18,6 +18,7 @@ public class AdminLogin extends PageServices implements MenuIF {
 
     @Override
     public void start() {
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
         Scanner scan = new Scanner(System.in);
 
         exit:
@@ -71,11 +72,11 @@ public class AdminLogin extends PageServices implements MenuIF {
                     break exit;
 
                 } catch (InvalidUserException e) {
-                    System.out.println(e.getMessage());
-                    if (userService.isValidAdmin(username, password)) {
+                        System.out.println("\n" + e.getMessage() + "\n");
                         System.out.println("1. Try again");
                         System.out.println("2. Log in as a customer");
                         System.out.println("3. Back to manager menu");
+                    while (true) {
                         switch (scan.nextLine()) {
                             case "1":
                                 login();

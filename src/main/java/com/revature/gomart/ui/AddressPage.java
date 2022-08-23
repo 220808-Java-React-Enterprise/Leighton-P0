@@ -19,6 +19,7 @@ public class AddressPage extends PageServices implements MenuIF {
 
     @Override
     public void start() {
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
         Scanner scan = new Scanner(System.in);
         Address userAddress = addressService.retrieve(user.getId());
         exit:

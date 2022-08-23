@@ -16,6 +16,7 @@ public class LoginMenu extends PageServices implements MenuIF {
 
     @Override
     public void start() {
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
         Scanner scan = new Scanner(System.in);
 
         exit:
@@ -35,7 +36,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                         break exit;
                     case "2":
                         Customer customer = signup();
-                        Order order = new Order(customer.getId());
+                        Order order = new Order(Order.generateId(), customer.getId());
                         userService.register(customer);
                         orderService.createNew(order);
                         new LandingPage(customer, userService, productService, orderService, opService, addressService).start();
@@ -75,7 +76,7 @@ public class LoginMenu extends PageServices implements MenuIF {
                     Order order = orderService.retrieve(false, user.getId());
                     if (order == null) {
                         System.out.println("Creating a cart for you");
-                        Order o = new Order(user.getId());
+                        Order o = new Order(Order.generateId(), user.getId());
                         orderService.createNew(o);
                     }
 
@@ -84,20 +85,24 @@ public class LoginMenu extends PageServices implements MenuIF {
 
                     break exit;
                 } catch (InvalidUserException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println("\n" + e.getMessage() + "\n");
                     System.out.println("1. Try again");
                     System.out.println("2. Create an account");
-                    switch (scan.nextLine()) {
-                        case "1":
-                            login();
-                            break exit;
-                        case "2":
-                            Customer customer = signup();
-                            userService.register(customer);
-                            new LandingPage(customer, userService, productService, orderService, opService, addressService).start();
-                            break exit;
-                        default:
-                            System.out.println("Input not recognized");
+                    while (true) {
+                        switch (scan.nextLine()) {
+                            case "1":
+                                login();
+                                break exit;
+                            case "2":
+                                Customer customer = signup();
+                                Order order = new Order(Order.generateId(), customer.getId());
+                                userService.register(customer);
+                                orderService.createNew(order);
+                                new LandingPage(customer, userService, productService, orderService, opService, addressService).start();
+                                break exit;
+                            default:
+                                System.out.println("Input not recognized");
+                        }
                     }
                 }
             }

@@ -16,6 +16,7 @@ public class OrderPage extends PageServices implements MenuIF{
 
     @Override
     public void start() {
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
         Scanner scan = new Scanner(System.in);
         exit:
         {

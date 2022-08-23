@@ -1,5 +1,6 @@
 package com.revature.gomart.ui.adminPages;
 
+import com.revature.gomart.daos.WarehouseDAO;
 import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import com.revature.gomart.ui.MenuIF;
@@ -25,11 +26,12 @@ public class AdminWarehouseMenu extends PageServices implements MenuIF {
 
     @Override
     public void start() {
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
         Scanner scan = new Scanner(System.in);
         exit:
         {
             while (true) {
-                System.out.println("\n Welcome to the warehouses! Please select which warehouse you'd like to view");
+                System.out.println("\nWelcome to the warehouses! Please select which warehouse you'd like to view");
                 System.out.println("\n1. Saffron City Warehouse \nStock: Medicines and Potions \n\n2. Vermillion City Warehouse \nStock: Pokeballs \n\n3. Celadon City Warehouse \nStock: Field items \n\n4. Main menu");
 
                 choiceExit:
@@ -37,13 +39,13 @@ public class AdminWarehouseMenu extends PageServices implements MenuIF {
                     switch (scan.nextLine()) {
                         case "1":
                             displayWarehouse("WH001");
-                            break choiceExit;
+                            break exit;
                         case "2":
                             displayWarehouse("WH002");
-                            break choiceExit;
+                            break exit;
                         case "3":
                             displayWarehouse("WH003");
-                            break choiceExit;
+                            break exit;
                         case "4":
                             new AdminMenu(user, userService, productService, orderService, opService, addressService).start();
                             break exit;
@@ -67,7 +69,7 @@ public class AdminWarehouseMenu extends PageServices implements MenuIF {
                 table.printTable();
 
                 System.out.println("\nWhat would you like to do?");
-                System.out.println("1. View orders from this warehouse \n2. Restock items \n3. Main menu");
+                System.out.println("1. View orders from this warehouse \n2. Restock items \n3. Warehouse menu");
                 choiceExit:
                 {
                     switch (scan.nextLine()) {
@@ -83,7 +85,7 @@ public class AdminWarehouseMenu extends PageServices implements MenuIF {
                             restockItems(id);
                             break choiceExit;
                         case "3":
-                            new AdminMenu(user, userService, productService, orderService, opService, addressService).start();
+                            new AdminWarehouseMenu(user, userService, productService, orderService, opService, addressService, new WarehouseService(new WarehouseDAO())).start();
                             break exit;
                     }
                 }
@@ -138,7 +140,7 @@ public class AdminWarehouseMenu extends PageServices implements MenuIF {
         }
 
 
-        String[] tableHeaders = {"Order ID", "Order Date", "User  ", "Product id  ", "Product name  ", "Quantity  "};
+        String[] tableHeaders = {"Order ID  ", "Order Date  ", "User  ", "Product id  ", "Product name  ", "Quantity  "};
         Object[][] tableData = new Object[allOrders.size()][6];
 
         for (int i = 0; i < allOrders.size(); i++) {
@@ -147,19 +149,19 @@ public class AdminWarehouseMenu extends PageServices implements MenuIF {
                     tableData[i][j] = allOrders.get(i).getOrder_id() + "  ";
                 }
                 if (j == 1) {
-                    tableData[i][j] = orderService.getOrderDateById(allOrders.get(i).getOrder_id()) + " ";
+                    tableData[i][j] = orderService.getOrderDateById(allOrders.get(i).getOrder_id()) + "  ";
                 }
                 if (j == 2) {
-                    tableData[i][j] = userService.findUsernameById(orderService.getUserIdById(allOrders.get(i).getOrder_id()));
+                    tableData[i][j] = userService.findUsernameById(orderService.getUserIdById(allOrders.get(i).getOrder_id())) + "  ";
                 }
                 if (j == 3) {
-                    tableData[i][j] = allOrders.get(i).getProduct_id();
+                    tableData[i][j] = allOrders.get(i).getProduct_id() + "  ";
                 }
                 if (j == 4) {
-                    tableData[i][j] = allOrders.get(i).getProduct_name();
+                    tableData[i][j] = allOrders.get(i).getProduct_name() + "  ";
                 }
                 if (j == 5) {
-                    tableData[i][j] = allOrders.get(i).getProduct_quantity();
+                    tableData[i][j] = allOrders.get(i).getProduct_quantity() + "  ";
                 }
             }
         }

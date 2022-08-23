@@ -6,7 +6,6 @@ import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import com.revature.gomart.ui.LoginMenu;
 import com.revature.gomart.ui.MenuIF;
-import com.revature.gomart.ui.OrderPage;
 import dnl.utils.text.table.TextTable;
 
 import java.util.List;
@@ -24,6 +23,7 @@ public class AdminMenu extends PageServices implements MenuIF {
 
     @Override
     public void start() {
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
         Scanner scan = new Scanner(System.in);
 
         exit:
@@ -36,10 +36,9 @@ public class AdminMenu extends PageServices implements MenuIF {
                         "\n3. View all orders      4. Sign out " +
                         "\n5. Exit the Pokemart");
 
-                String productChoice = scan.nextLine();
                 choiceExit:
                 {
-                    switch (productChoice) {
+                    switch (scan.nextLine()) {
                         case "1":
                             new AdminWarehouseMenu(user, userService, productService, orderService, opService, addressService, new WarehouseService(new WarehouseDAO())).start();
                             break exit;
@@ -52,12 +51,9 @@ public class AdminMenu extends PageServices implements MenuIF {
                             System.out.println("\nPress any key to continue");
                             scan.nextLine();
                             break choiceExit;
-//                        case "4":
-//                            new AdminProfile(user, userService, productService, orderService, opService, addressService).start();
-//                            break exit;
                         case "4":
                             System.out.println("\nThank you!");
-                            new LoginMenu(new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO()), new AddressService(new AddressDAO())).start();
+                            new LoginMenu(userService, productService, orderService, opService, addressService).start();
                             break exit;
                         case "5":
                             System.out.println("\nThank you! \nWe hope to see you again!");

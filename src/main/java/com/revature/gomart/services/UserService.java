@@ -75,7 +75,7 @@ public class UserService {
 
     public boolean isValidPassword(String password) {
         if (!password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,20}$"))
-            throw new InvalidUserException("/Password must be 8-20 characters with at least one uppercase letter, one lowercase letter, one number, and one special character");
+            throw new InvalidUserException("\nPassword must be 8-20 characters with at least one uppercase letter, one lowercase letter, one number, and one special character");
         return true;
     }
 

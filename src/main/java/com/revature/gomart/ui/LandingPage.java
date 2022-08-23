@@ -1,6 +1,5 @@
 package com.revature.gomart.ui;
 
-import com.revature.gomart.daos.*;
 import com.revature.gomart.models.*;
 import com.revature.gomart.services.*;
 import dnl.utils.text.table.TextTable;
@@ -19,6 +18,7 @@ public class LandingPage extends PageServices implements MenuIF {
 
     @Override
     public void start() {
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
         Scanner scan = new Scanner(System.in);
 
         exit:
@@ -53,7 +53,7 @@ public class LandingPage extends PageServices implements MenuIF {
                             break exit;
                         case "7":
                             System.out.println("\nThank you for shopping with us!");
-                            new LoginMenu(new UserService(new UserDAO()), new ProductService(new ProductDAO()), new OrderService(new OrderDAO()), new OPService(new OpDAO()), new AddressService(new AddressDAO())).start();
+                            new LoginMenu(userService, productService, orderService, opService, addressService).start();
                             break exit;
                         case "8":
                             System.out.println("\nThank you for shopping with us! \nWe hope to see you again!");
@@ -104,7 +104,6 @@ public class LandingPage extends PageServices implements MenuIF {
                                 break exit;
                             default:
                                 System.out.println("Input not recognized");
-                                break potionsExit;
                         }
                     }
                 }
@@ -156,7 +155,6 @@ public class LandingPage extends PageServices implements MenuIF {
                                 break exit;
                             default:
                                 System.out.println("Input not recognized");
-                                break medicinesExit;
                         }
                     }
                 }
@@ -196,7 +194,6 @@ public class LandingPage extends PageServices implements MenuIF {
                                 break exit;
                             default:
                                 System.out.println("Input not recognized");
-                                break pokeballsExit;
                         }
                     }
                 }
@@ -238,7 +235,6 @@ public class LandingPage extends PageServices implements MenuIF {
                                 break exit;
                             default:
                                 System.out.println("Input not recognized");
-                                break fieldItemsExit;
                         }
                     }
                 }

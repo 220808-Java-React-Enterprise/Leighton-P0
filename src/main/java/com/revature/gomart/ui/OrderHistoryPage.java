@@ -19,6 +19,7 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
 
     @Override
     public void start() {
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
         Scanner scan = new Scanner(System.in);
         List<Order> userOrders = orderService.getByUserId(user.getId());
 
@@ -59,6 +60,8 @@ public class OrderHistoryPage extends PageServices implements MenuIF {
 
                                         TextTable orderTable = new OrderPage(user, userService, productService, orderService, opService, addressService).generateOrder(products, order);
                                         orderTable.printTable();
+                                        System.out.println("\nOrder total: " + order.getTot_price());
+
                                         System.out.println("\nWhat would you like to do? \n\n1. Back to order history \n2. Back to my profile \n3. Back to store page");
                                         switch(scan.nextLine()) {
                                             case "1":
