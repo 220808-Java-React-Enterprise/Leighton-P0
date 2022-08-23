@@ -37,7 +37,7 @@ The store app is a software that helps customers purchase products from your bus
 
 * Project requirements delivered
 
-### Phase 1
+### Phase 1 (August 15, 2022)
 
 * Remote repository created through Github 
 * Basic file structure established
@@ -48,7 +48,7 @@ The store app is a software that helps customers purchase products from your bus
 * Basic Customer UI framework established
 * User registration and verification established
 
-### Phase 2
+### Phase 2 (August 19, 2022)
 
 * Store items added to database
 * Store UI constructed to feature multiple categories
@@ -61,7 +61,7 @@ The store app is a software that helps customers purchase products from your bus
 * Item stock in database reflected reductions based on orders placed
 * Order history built with options to sort based on date and price
 
-### Phase 3
+### Phase 3 (August 22, 2022)
 
 * Admin (Manager) login finalized to match customer login
 * Separate folder for Admin UIs created
@@ -72,18 +72,30 @@ The store app is a software that helps customers purchase products from your bus
 * Option for admin to replenish stock of entire warehouse implemented
 * Tests written and run, all passed successfully
 
-### Final
+### Final (August 24, 2022)
 
 * Project Presentation
 
 ## Technologies
 
-* Java 8
-* PostgreSQL (Written on DBeaver, running via Docker)
+* Java 8 (Written in Intellij IDEA Community)
+* PostgreSQL (Written in DBeaver, running via Docker)
 
 * Apache Maven
 * JUnit
 * Mockito
 * J-Text-Utils
 * Commons-Lang3
+
+## Future developments
+
+* Expand store to include a wider selection of items
+* Function to allow managers to restock items individually, add new items to warehouses
+* Implement regional functionality to extend operations to more users
+* Make the order history page more cohesive and fluid
+* Allow managers to view order details by user more efficiently
+
+## Contributors
+
+* Leighton Albrecht
 
