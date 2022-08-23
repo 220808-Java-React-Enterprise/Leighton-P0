@@ -2,7 +2,7 @@ package com.revature.gomart.models;
 
 public class Customer extends User {
 
-    public Customer(){}
+    public Customer(){this.admin = false;}
 
     public Customer(String id) {
         this.id = id;

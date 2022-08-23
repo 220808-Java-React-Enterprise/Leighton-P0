@@ -22,8 +22,7 @@ create table users (
 create table addresses (
 	id varchar not null,
 	full_name varchar not null,
-	street1 varchar not null,
-	street2 varchar,
+	street varchar not null,
 	city varchar not null,
 	region varchar not null,
 	user_id varchar not null,
@@ -50,6 +49,7 @@ create table products (
 	category varchar not null,
 	price int not null,
 	stock int not null,
+	max_stock int not null,
 	warehouse_id varchar not null,
 	sort int not null,
 

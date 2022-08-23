@@ -42,7 +42,11 @@ public class UserService {
         return userDAO.getAll();
     }
 
-    public String findUsernameById(String uid) {return userDAO.getUsernameById(uid);}
+    public String findUsernameById(String uid) {
+        String username = userDAO.getUsernameById(uid);
+        if (username == null) throw new InvalidUserException("User not found");
+        return username;
+    }
 
     public boolean isValidUsername(String username) {
         if (!username.matches("^[a-zA-Z0-9_-]{3,15}$"))

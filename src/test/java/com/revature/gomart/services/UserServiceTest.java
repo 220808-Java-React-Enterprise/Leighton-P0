@@ -1,7 +1,7 @@
 package com.revature.gomart.services;
 
 import com.revature.gomart.daos.UserDAO;
-import com.revature.gomart.models.User;
+import com.revature.gomart.models.*;
 import com.revature.gomart.utils.custom_exceptions.InvalidUserException;
 
 import org.junit.Assert;
@@ -21,57 +21,28 @@ public class UserServiceTest {
     @Before
     public void setup() {sut = new UserService(mockUserDao);}
 
-    @Test
-    public void test_isValidUsername_withCorrectUsername() {
-        String validUsername = "AshKetchum1999";
-
-        boolean flag = sut.isValidUsername(validUsername);
-
-        Assert.assertTrue(flag);
-    }
-
+    // Tests whether a username is valid
+    // this username has a disallowed symbol
+    // Usernames can only contain the special characters _ and -
     @Test(expected = InvalidUserException.class)
     public void test_isInvalidUsername_withIncorrectUsername() {
-        String invalidUsername = "Oak@PalletTown";
+        String invalidUsername = "Brock@Pewter";
 
         sut.isValidUsername(invalidUsername);
     }
 
-    @Test(expected = InvalidUserException.class)
-    public void test_isInvalidUsername_withEmptyUsername() {
-        String invalidUsername = "";
-
-        sut.isValidUsername(invalidUsername);
-    }
-
-    @Test
-    public void test_isValidEmail_withValidEmail() {
-        String validEmail = "misty@ceruleangym.com";
-
-        sut.isValidEmail(validEmail);
-    }
-
+    // Tests whether an email is valid
+    // this email is not properly formatted to the regex
     @Test(expected = InvalidUserException.class)
     public void test_isInvalidEmail_withInvalidEmail() {
-        String invalidEmail = "gary%oak@pallettown.com";
+        String invalidEmail = "@garyoak.pallettown.com";
 
         sut.isValidEmail(invalidEmail);
     }
 
-    @Test(expected = InvalidUserException.class)
-    public void test_isInvalidEmail_withEmptyEmail() {
-        String invalidEmail = "";
-
-        sut.isValidEmail(invalidEmail);
-    }
-
-    @Test
-    public void test_isValidPassword_withValidPassword() {
-        String validPassword = "P@ssw0rd";
-
-        sut.isValidPassword(validPassword);
-    }
-
+    // Tests the validity of a password
+    // This password does not meet regex character requirements
+    // Passwords must also contain an uppercase letter and a special character
     @Test(expected = InvalidUserException.class)
     public void test_isInvalidPassword_withInvalidPassword() {
         String invalidPassword = "1234567890abcdefg";
@@ -79,13 +50,8 @@ public class UserServiceTest {
         sut.isValidPassword(invalidPassword);
     }
 
-    @Test(expected = InvalidUserException.class)
-    public void test_isInvalidPassword_withEmptyPassword() {
-        String invalidPassword = "";
-
-        sut.isValidEmail(invalidPassword);
-    }
-
+    // Tests the validity of the street address input
+    // This street address is valid
     @Test
     public void test_isValidAddress_withValidAddress() {
         String validAddress = "123 Oran Way";
@@ -93,6 +59,8 @@ public class UserServiceTest {
         sut.isValidStreetAddress(validAddress);
     }
 
+    // This street address does not meet regex repetition requirements
+    // It should have at least three groupings of characters
     @Test(expected = InvalidUserException.class)
     public void test_isInvalidAddress_withInvalidAddress() {
         String invalidAddress = "123 Oran";
@@ -100,10 +68,76 @@ public class UserServiceTest {
         sut.isValidStreetAddress(invalidAddress);
     }
 
+    // Tests the validity of the hometown input
+    // This item is not properly formatted
+    // It should be formatted as "Pallet Town"
     @Test(expected = InvalidUserException.class)
-    public void test_isInvalidAddress_withEmptyAddress() {
-        String invalidAddress = "";
+    public void test_isInvalidHometown_withIncorrectFormat() {
+        String invalidAddress = "pallet";
 
         sut.isValidStreetAddress(invalidAddress);
+    }
+
+    @Test
+    public void test_login_ValidLoginGivenCorrectCredentials() {
+        UserService spiedSut = Mockito.spy(sut);
+        String validUsername = "coolleighton";
+        String validPassword = "P@ssw0rd";
+
+        when(spiedSut.isValidUsername(validUsername)).thenReturn(true);
+        when(spiedSut.isValidPassword(validPassword)).thenReturn(true);
+        when(mockUserDao.getByUsernameAndPassword(validUsername, validPassword)).thenReturn(new User());
+
+        User user = spiedSut.login(validUsername, validPassword);
+
+        Assert.assertNotNull(user);
+
+        verify(mockUserDao, times(1)).getByUsernameAndPassword(validUsername, validPassword);
+    }
+
+    @Test(expected = InvalidUserException.class)
+    public void test_findById_InvalidGivenInput() {
+        String invalidId = "invalid";
+
+        when(mockUserDao.getById(invalidId)).thenReturn(null);
+
+        sut.findById(invalidId);
+    }
+
+    @Test(expected = InvalidUserException.class)
+    public void test_isValidAdmin_GivenAdminEqualsFalse() {
+        UserService spiedSut = Mockito.spy(sut);
+        String validUsername = "username";
+        String validPassword = "P@ssw0rd";
+
+        when(spiedSut.isValidUsername(validUsername)).thenReturn(true);
+        when(spiedSut.isValidPassword(validPassword)).thenReturn(true);
+        when(mockUserDao.getByUsernameAndPassword(validUsername,validPassword)).thenReturn(new Customer());
+
+        boolean isAdmin = spiedSut.isValidAdmin(validUsername,validPassword);
+
+        Assert.assertNotNull(isAdmin);
+
+        verify(mockUserDao, times(1)).getAdmin(validUsername,validPassword);
+    }
+
+    @Test(expected = InvalidUserException.class)
+    public void test_isDuplicateUsername_GivenDuplicateUsername() {
+        UserService spiedSut = Mockito.spy(sut);
+        String validUsername = "username";
+        String validPassword = "P@ssw0rd";
+
+        String duplicateUsername = "username";
+
+        when(spiedSut.isValidUsername(validUsername)).thenReturn(true);
+        when(spiedSut.isValidPassword(validPassword)).thenReturn(true);
+        when(spiedSut.isValidPassword(duplicateUsername)).thenReturn(true);
+        when(mockUserDao.getByUsernameAndPassword(validUsername,validPassword)).thenReturn(new User());
+
+        User user = spiedSut.login(validUsername, validPassword);
+
+        Assert.assertNotNull(user);
+
+        verify(mockUserDao, times(1)).getUsername(duplicateUsername);
     }
 }
