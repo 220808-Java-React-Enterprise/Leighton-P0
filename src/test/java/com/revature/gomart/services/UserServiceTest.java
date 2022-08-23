@@ -14,10 +14,13 @@ import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
 
+    // Imports user services
     private UserService sut;
 
+    // Creates a mock database
     private final UserDAO mockUserDao = mock(UserDAO.class);
 
+    // Links the mock database to the user services
     @Before
     public void setup() {sut = new UserService(mockUserDao);}
 
@@ -78,6 +81,8 @@ public class UserServiceTest {
         sut.isValidStreetAddress(invalidAddress);
     }
 
+    // Tests the login function
+    // This input successfully logs in a user
     @Test
     public void test_login_ValidLoginGivenCorrectCredentials() {
         UserService spiedSut = Mockito.spy(sut);
@@ -95,6 +100,8 @@ public class UserServiceTest {
         verify(mockUserDao, times(1)).getByUsernameAndPassword(validUsername, validPassword);
     }
 
+    // Tests the Find User By ID function
+    // This input is not an existing user id
     @Test(expected = InvalidUserException.class)
     public void test_findById_InvalidGivenInput() {
         String invalidId = "invalid";
@@ -104,6 +111,9 @@ public class UserServiceTest {
         sut.findById(invalidId);
     }
 
+    // Tests admin login
+    // The Customer class has a default "admin" attribute of "false"
+    // User must have "admin" parameter of "true"
     @Test(expected = InvalidUserException.class)
     public void test_isValidAdmin_GivenAdminEqualsFalse() {
         UserService spiedSut = Mockito.spy(sut);
@@ -121,6 +131,8 @@ public class UserServiceTest {
         verify(mockUserDao, times(1)).getAdmin(validUsername,validPassword);
     }
 
+    // Tests whether a username exists in the database or not
+    // This input already exists in the database
     @Test(expected = InvalidUserException.class)
     public void test_isDuplicateUsername_GivenDuplicateUsername() {
         UserService spiedSut = Mockito.spy(sut);
